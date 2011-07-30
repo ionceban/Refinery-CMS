@@ -188,12 +188,18 @@
 					}
 				});
 				
+				var order = $('#live-sort li.selected').attr('order');
+				
 				$.ajax({
 					url: "filter_images.php",
 					cache: false,
 					type: "POST",
-					data: {mediums: mediums, divisions: divisions, deliverables: deliverables, keywords: keywords},
-					success: function(data){
+					data: {mediums: mediums, 
+						divisions: divisions, 
+						deliverables: deliverables, 
+						keywords: keywords,
+						order: order
+					}, success: function(data){
 						var encoded_image_list = data;
 						$.ajax({
 							url: "get_list_view.php",
@@ -231,3 +237,17 @@
 					}
 				});
 			}
+			
+			$(document).ready(function(){
+				$('#live-sort ul li').click(function(){
+					$('#live-sort ul li').each(function(){
+						$(this).removeClass('selected');
+					});
+					
+					$(this).addClass('selected');
+					
+					if ($('#live-images-wrapper').attr('f_active') == 'active'){
+						filter_live_images();
+					}
+				});
+			});

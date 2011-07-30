@@ -845,3 +845,33 @@ ul.dropdown-nav div.mm-item-content {
 .category-discipline-wrapper .dk_toggle{
 	color: #FFFFFF;
 }
+
+#live-sort ul{
+	list-style-type: none;
+}
+
+#live-sort ul li{
+	color: #888888;
+	border-right: none;
+	border-left: none;
+	width: 60px;
+	height: 20px;
+	float: none;
+	display: block;
+	border-top: 1px solid #BFBFBF;
+	padding-left: 20px;
+	cursor: pointer;
+}
+
+#live-sort ul li:first-child{
+	border-top: none;
+}
+
+#live-sort ul li.selected{
+	color: #ffffff;
+}
+
+#live-sort li span{
+	font-size: 11pt;
+	margin-bottom: 5px;;
+}

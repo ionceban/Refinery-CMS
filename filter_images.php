@@ -6,8 +6,9 @@
 	$Divisions = $_POST['divisions'];
 	$Deliverables = $_POST['deliverables'];
 	$Keywords = $_POST['keywords'];
+	$order = $_POST['order'];
 
-	$query_statement = get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords);
+	$query_statement = get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords, $order);
 	
 	$query = mysql_query($query_statement, $db_conn);
 	
@@ -60,7 +61,7 @@
 		$response[$response[0]]['image_id'] = $single_image['image_id'];
 		$response[$response[0]]['featured'] = $single_image['featured'];
 		$response[$response[0]]['filename'] = $single_image['filename'];
-		$response[$response[0]]['date'] = $sigle_image['date'];
+		$response[$response[0]]['date'] = $single_image['date'];
 		$response[$response[0]]['project_name'] = $single_image['project_name'];
 		$response[$response[0]]['medium_name'] = $single_image['medium_name'];
 		$response[$response[0]]['division_name'] = $single_image['division_name'];

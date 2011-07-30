@@ -72,7 +72,7 @@
 		return "success";
 	}
 
-	function get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords){
+	function get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords, $order){
 	
 		$query_statement = "SELECT DISTINCT images.id, images.featured, images.name, images.date, projects.name, mediums.name, divisions.name";
 		$query_statement .= " FROM images, projects, mediscs, didiscs, mediums, divisions, disciplines";
@@ -120,6 +120,8 @@
 		}
 		
 		$query_statement .= ")";
+		
+		$query_statement .= " ORDER BY " . $order;
 		
 		return $query_statement;
 	}
