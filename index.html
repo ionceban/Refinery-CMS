@@ -791,7 +791,13 @@
 						$('#live-filter img').click(function(){
 							var checkbox_type = 1 - parseInt($(this).attr('src').split('checkbox-')[1].split('.')[0]);
 							$(this).attr('src', 'images/checkbox-' + checkbox_type + '.png');
-							$('#live-images-wrapper').attr('f_active', 'active');
+							
+							if ($('#live-images-wrapper').attr('f_active') == 'disabled'){
+								$('#apply-filters-poster').hide();
+								$('#live-images-wrapper').fadeIn('slow');
+							}
+							$('#live-images-wrapper').attr('f_active', 'filter');
+							
 							
 							filter_live_images();
 						})
@@ -932,9 +938,9 @@
                                 <div class="search-dropdown">
                                     <span>
                                         <a class="reset-input" href="#">reset input</a>
-                                        <input type="text" name="search" value="start typing here" />
+                                        <input id="search-query-string" type="text" name="search" value="" />
                                     </span>
-                                    <input type="submit" value="search" onclick="alert('wtf');"/>
+                                    <input type="submit" value="search" onclick="search_live_images();"/>
 
                                 </div>
                             </li>
@@ -967,7 +973,7 @@
                     </nav>
                     <section class="view-container">
                     	<span id="apply-filters-poster" class="apply-filters"></span>
-                    	<section id="live-images-wrapper" f_active="false">
+                    	<section id="live-images-wrapper" f_active="disabled">
 	                    	<ul id="live-grid" class="grid-block">
 	                    	</ul>
 	                    	

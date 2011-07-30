@@ -145,12 +145,11 @@
             
 			function filter_live_images(){
 				
-				if ($('#live-images-wrapper').attr('f_active') == 'false'){
+				if ($('#live-images-wrapper').attr('f_active') == 'disabled'){
 					return false;
 				}
 				
-				$('#apply-filters-poster').hide();
-				$('#live-images-wrapper').fadeIn('slow');
+				$('#live-images-wrapper').attr('f_active', 'filter');
 				
 				var mediums = "";
 				$('#live-filter-mediums img').each(function(){
@@ -238,6 +237,64 @@
 				});
 			}
 			
+			function search_live_images(){
+				
+				if ($('#live-images-wrapper').attr('f_active') == 'disabled'){
+					$('#apply-filters-poster').hide();
+					$('#live-images-wrapper').fadeIn('slow');
+				}
+				
+				$('#live-images-wrapper').attr('f_active', 'search');
+				
+				var query_string = $('#search-query-string').val();
+				var order = $('#live-sort li.selected').attr('order');
+				
+				$.ajax({
+					url: "search_images.php",
+					cache: false,
+					type: "POST",
+					data: {
+						query_string: query_string,
+						order: order
+					}, success: function(data){
+						var encoded_image_list = data;
+						$.ajax({
+							url: "get_list_view.php",
+							cache: false,
+							type: "POST",
+							data: {image_list: encoded_image_list},
+							success: function(data){
+								if ($('#live-list-btn').hasClass('selected')){
+									$('#live-list').hide();
+								}
+								$('#live-list table tbody').html(data);
+								assign_list_events('#live-list');
+								if ($('#live-list-btn').hasClass('selected')){
+									$('#live-list').fadeIn('slow');
+								}
+							}
+						});
+						
+						$.ajax({
+							url: "get_grid_view.php",
+							cache: false,
+							type: "POST",
+							data: {image_list: encoded_image_list},
+							success: function(data){
+								if ($('#live-grid-btn').hasClass('selected')){
+									$('#live-grid').hide();
+								}
+								$('#live-grid').html(data);
+								assign_grid_events('#live-grid');
+								if ($('#live-grid-btn').hasClass('selected')){
+									$('#live-grid').fadeIn();
+								}
+							}
+						});
+					}
+				});
+			}
+			
 			$(document).ready(function(){
 				$('#live-sort ul li').click(function(){
 					$('#live-sort ul li').each(function(){
@@ -246,8 +303,10 @@
 					
 					$(this).addClass('selected');
 					
-					if ($('#live-images-wrapper').attr('f_active') == 'active'){
+					if ($('#live-images-wrapper').attr('f_active') == 'filter'){
 						filter_live_images();
+					} else if ($('#live-images-wrapper').attr('f_active') == 'search'){
+						search_live_images();
 					}
 				});
 			});
