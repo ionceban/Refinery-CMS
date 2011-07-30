@@ -1,3 +1,39 @@
+<?php
+	$db_conn = mysql_connect('localhost', 'root', 'okapistudio');
+	if (!$db_conn){
+		die("Could not connect to DB");
+	}
+	mysql_select_db('ref_users') or die("Could not select DB");
+	
+	if ($_POST['username'] && $_POST['password']){
+		$query_statement = "SELECT password FROM users WHERE username='" . $_POST['username'] . "'";
+		$query_statement .= " AND password='" . md5($_POST['password']) . "'";
+		$query = mysql_query($query_statement, $db_conn);
+		$row = mysql_fetch_row($query);
+		
+		if (!$row){
+			header('Location: login.php');
+		} else {
+			setcookie("username", $_POST['username'], time() + 3600);
+			setcookie("password", $_POST['password'], time() + 3600);
+		}
+	} else {
+		if (!isset($_COOKIE['username']) || !isset($_COOKIE['password'])){
+			header('Location: login.php');
+		} else {
+			$query_statement = "SELECT password FROM users WHERE username='" . $_COOKIE['username'] . "'";
+			$query_statement .= " AND password='" . md5($_COOKIE['password']) . "'";
+			$query = mysql_query($query_statement, $db_conn);
+			$row = mysql_fetch_row($query);
+			
+			if (!$row){
+				setcookie("username", "", time() - 1000000);
+				setcookie("password", "", time() - 1000000);
+				header('Location: login.php');
+			}
+		}
+	}
+?>
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
@@ -804,7 +840,7 @@
 					}
 				});
 			});
-            
+			
         </script>
     </head>
     <body onload="update_queue(); ">
@@ -823,16 +859,16 @@
                                 <a class="active" href="#">portfolio admin</a>
                             </li>
                             <li>
-                                <a href="#">client site admin</a>
+                                <a href="javascript: void(0)">client site admin</a>
                             </li>
                             <li>
                                 <a href="http://mail.therefinerycreative.com/" target="_blank">email</a>
                             </li>
                             <li>
-                                <a href="#">ftp</a>
+                                <a href="javascript: void(0)">ftp</a>
                             </li>
                             <li>
-                                <a href="#">logout</a>
+                                <a href="logout.php">logout</a>
                             </li>
                         </ul>
                     </nav><!-- main-navigation -->
