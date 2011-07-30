@@ -623,6 +623,21 @@
                 	}
                 });
                 
+                $('#edit-kd').dialog({
+                	autoOpen: false,
+                	width: "200",
+                	height: "500",
+                	draggable: false,
+                	resizable: false,
+                	position: "top",
+                	modal: true,
+                	buttons: {
+                		Ok: function(){
+                			$(this).dialog('close');
+                		}
+                	}
+                });
+                
                 get_keywords_list();
             	get_deliverables_list();
             	
@@ -812,11 +827,76 @@
             		}
             	});
             });
+            
+            function refresh_kd_edit(kd_type){
+            	$('#edit-kd').attr('kd_type', kd_type);
+            	$.ajax({
+            		url: "get_kd_content.php",
+            		cache: false,
+            		type: "POST",
+            		data: {type: kd_type},
+            		success: function (data){
+            			if (data != 'failed'){
+            				$('#kd-wrapper ul').html(data);
+            				$('.delete-kd-button').click(function(){
+            					var ays = confirm("Are you sure?");
+            					if (ays == true){
+            						var kd_id = $(this).parents('li').attr('kd_id');
+            						var kd_type = $('#edit-kd').attr('kd_type');
+            						$.ajax({
+            							url: "delete_kd.php",
+            							cache: false,
+            							type: "POST",
+            							data: {type: kd_type, id: kd_id},
+            							success: function(data){
+            								if (data == 'success'){
+            									refresh_kd_edit(kd_type);
+            								}
+            							}
+            						});
+            					}
+            				});
+            				if (kd_type == 'keywords'){
+            					get_keywords_list();
+            				} else {
+            					get_deliverables_list();
+            				}
+            			}
+            		}
+            	});
+            }
+            
+            function edit_kd_list(kd_type){
+            	$('#edit-kd').dialog('open');
+            	$('#overlay').dialog('close');
+            	$('#edit-multiple-dialog').dialog('close');
+            	refresh_kd_edit(kd_type);
+            }
 			
 			$(document).ready(function(){
+				$('#add-kd-button').click(function(){
+           			var new_name = $('#add-kd').val();
+            		var kd_type = $('#edit-kd').attr('kd_type');
+           			$.ajax({
+            			url: "add_kd.php",
+            			cache: false,
+            			type: "POST",
+            			data: {type: kd_type, new_name: new_name},
+            			success: function(data){
+            				if (data == 'success'){
+            					refresh_kd_edit(kd_type);
+            				} else {
+            					alert(data);
+            				}
+            			}
+        			});
+          		});
+          		$('#done-kd').click(function(){
+          			$('#add-kd').val('');
+          			$('#edit-kd').dialog('close');
+          		});
 				
 				$('.dropdown-nav').megamenu();
-				
 				
 				$.ajax({
 					url: "get_filter_dropdown.php",
@@ -1034,10 +1114,23 @@
 	                    </section>
                 	</section><!-- end main-block -->
             </section><!-- end main -->
+            <div id="edit-kd">
+            	<div id="kd-wrapper">
+					<ul>
+						
+					</ul>
+				</div>
+				<div id="add-kd-wrapper">
+					<input type="text" id="add-kd" />
+					<span id="add-kd-button"><span>add</span></span>
+				</div>
+				<span id="done-kd"><span>done</span></span>
+			</div>
 			<div id="edit-multiple-dialog">
 				<header>
 					<h2>edit images</h2>
 				</header>
+				
 				<section id="edit-multiple-details">
 					<table>
 						<tr>
@@ -1165,7 +1258,7 @@
 			                                        		
 			                                          	</ul>
 			                                  		</div>
-			                                       	<a class="edit-list" href="#">add new..</a>
+			                                       	<a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('deliverables')">edit list..</a>
 			                                   	</div>
 			                              	</td>
 			                              	<td><div style="margin-left: 40px">
@@ -1179,7 +1272,7 @@
 			                                        		
 			                                          	</ul>
 			                                  		</div>
-			                                       	<a class="edit-list" href="#">add new..</a>
+			                                       	<a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('keywords')">edit list..</a>
 			                                   	</div></div>
 			                              	</td>
 			                            </tr>
@@ -1319,7 +1412,7 @@
                                                     <ul id="deliverables-list">
                                                     </ul>
                                                 </div>
-                                                <a class="edit-list" href="#">edit list..</a>
+                                                <a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('deliverables')">edit list..</a>
                                             </div>
                                         </div><!-- end float-left -->
 
@@ -1330,7 +1423,7 @@
                                                     <ul id="keywords-list">
                                                     </ul>
                                                 </div>
-                                                <a class="edit-list" href="#">edit list..</a>
+                                                <a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('keywords')">edit list..</a>
                                             </div>
                                         </div><!-- end float-left -->
 

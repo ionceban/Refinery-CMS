@@ -875,3 +875,80 @@ ul.dropdown-nav div.mm-item-content {
 	font-size: 11pt;
 	margin-bottom: 5px;;
 }
+
+#kd-wrapper {
+	height: 370px;
+	width: 150px;
+	margin-top: 55px;
+	margin-left: 10px;
+	overflow-y: scroll;
+	overflow-x: none;
+}
+
+#kd-wrapper ul{
+	font-size: 10pt;
+	color: #FFFFFF;
+}
+
+#kd-wrapper ul li{
+	border-top: 1px solid #DADBDB;
+}
+
+#kd-wrapper ul li:first-child{
+	border-top: none;
+}
+
+#add-kd-wrapper{
+	margin-top: 5px;
+	height: 22px;
+}
+
+#add-kd{
+	float: left;
+	width: 109px;
+	height: 20px;
+	color: #FFFFFF;
+	background-color: #25292A;
+	border: 1px solid #DADBDB;
+	margin-left: 10px;
+	font-size: 10pt;
+}
+
+#add-kd-button{
+	height: 22px;
+	display: block;
+	float: left;
+	width: 40px;
+	color: #FFFFFF;
+	background-color: #E20B3A;
+	font-size: 11pt;
+	cursor: pointer;
+}
+
+#add-kd-button span{
+	margin-left: 6px;
+}
+
+#done-kd{
+	margin-top: 5px;
+	display: block;
+	float: right;
+	color: #FFFFFF;
+	background-color: #E20B3A;
+	height: 22px;
+	width: 40px;
+	font-size: 11pt;
+	margin-right: 5px;
+	cursor: pointer;
+}
+
+#done-kd span{
+	margin-left: 3px;
+}
+
+.delete-kd-button{
+	float: right;
+	margin-right: 5px;
+	cursor: pointer;
+	margin-top: 4px;
+}
