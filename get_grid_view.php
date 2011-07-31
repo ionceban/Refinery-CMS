@@ -11,7 +11,9 @@
 		$file_attrs = preg_split('/\./', $image_array[$i]['filename']);
 		$thumber_ext = extension_checker('projs/' . $file_attrs[0] . "_t_thumber");
 		
-		$response .= "<img src='projs/" . $file_attrs[0] . "_t_grid." . $thumber_ext . "' />";
+		$rand_mod = rand(1, 10000);
+		$response .= "<img src='projs/" . $file_attrs[0] . "_t_grid." . $thumber_ext;
+		$response .= "?modified=" . $rand_mod . "' />";
 		$response .= "<div class='select-item'>";
 		$response .= "<img class='select-toggle' src='images/checkbox-0.png' />";
 		$response .= "<img class='star-toggle' src='images/";

@@ -55,7 +55,10 @@
         <link rel="stylesheet" type="text/css" href="css/jquery.megamenu.css" />
         <link rel="stylesheet" type="text/css" href="css/dropkick.css" />
         <link rel="stylesheet" type="text/css" href="css/Jcrop.css" />
+        <link href="uploadify/uploadify.css" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="uploadify/swfobject.js"></script>
+		<script type="text/javascript" src="uploadify/jquery.uploadify.v2.1.4.min.js"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.dropkick-1.0.0.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/jquery.megamenu.js" type="text/javascript"></script>
@@ -63,8 +66,13 @@
         <script type="text/javascript" src="js/jquery.form.js"></script>
         <script type="text/javascript" src="js/overlay.js"></script>
         <script type="text/javascript" src="js/results.js"></script>
+        <script type="text/javascript" src="js/uploader.js"></script>
 		<script type="text/javascript">
-		
+			var FIT_COUNTER = 0;
+			var NECESSARY_FITS = 0;
+			
+			var SAVE_COUNTER = 0;
+			var NECESSARY_SAVES = 0;
 		
 			function save_image_details(){
 				var scaled_height = $('#thumbnail-selector').css('height').split('px')[0];
@@ -367,7 +375,13 @@
             		type: "POST",
             		data: {image_src: image_src, width: width, height: height},
             		success: function(data){
-            			if (data != 'success') alert(data);
+            			if (data != 'success'){
+            				alert(data);
+            			}
+            			++FIT_COUNTER;
+            			if (FIT_COUNTER == NECESSARY_FITS){
+            				update_queue();
+            			}
             		}
             	});
             }
@@ -379,63 +393,6 @@
             	ajax_ext.send('base_name=' + base_name);
             	return ajax_ext.responseText;
             }
-            
-			
-            function showResponse(responseText, statusText, xhr, $form)  {
-                if (responseText != 'failed') {
-                	var original_extension = responseText.split('.')[1];
-                	var file_body = responseText.split('.')[0];
-                	var file_extension = extension_detect(file_body.split('projs/')[1] + "_t_thumber.");
-                	
-                	var t_thumber = file_body + "_t_thumber." + file_extension;
-                	var t_normal = file_body + "_t_normal." + file_extension;
-                	var t_featured = file_body + "_t_featured." + file_extension;
-                	var t_grid = file_body + "_t_grid." + file_extension;
-                	var t_list = file_body + "_t_list." + file_extension;
-                	
-                	var img_Preloader = new Image();
-                	img_Preloader.src = t_thumber;
-                	img_Preloader.onload = function(){
-                		var old_width = img_Preloader.width;
-                		var old_height = img_Preloader.height;
-                		
-                		var list_height = 50;
-                		var list_width = parseInt((list_height * old_width) / old_height);
-                		if (list_width < 35) list_width = 35;
-                		if (list_width > 200) list_width = 200;
-                		
-                		fit_image(t_list.split('?')[0], list_width, list_height);
-                		
-                		var grid_height = 110;
-                		var grid_width = parseInt((grid_height * old_width) / old_height);
-                		if (grid_width < 97) grid_width = 97;
-                		if (grid_width > 400) grid_width = 400;
-                		
-                		fit_image(t_grid.split('?')[0], grid_width, grid_height);
-                		
-                		if (original_extension == 'jpg' || original_extension == 'png' || original_extension == 'gif'){
-                			fit_image(t_featured.split('?')[0], 222, 318);
-                			fit_image(t_normal.split('?')[0], 99, 147);
-                		} else {
-                			fit_image(t_featured.split('?')[0], 468, 318);
-                			fit_image(t_normal.split('?')[0], 222, 147);
-                		}
-                		update_queue();
-                	}
-    				
-                	
-                } else {
-                	alert('Failed upload!');
-                }
-            }
-            
-            function showResponse_IE(success){
-            	if (success == 1) update_queue(); else alert('Failed upload!');
-            }
-            
-            
-            
-            
            
             function showThumbRequest(formData, jqForm, options) {
                 return true;
@@ -466,6 +423,9 @@
                 		if (list_width < 35) list_width = 35;
                 		if (list_width > 200) list_width = 200;
                 		
+                		FIT_COUNTER = 0;
+                		NECESSARY_FITS = 4;
+                		
                 		fit_image(t_list.split('?')[0], list_width, list_height);
                 		
                 		var grid_height = 110;
@@ -482,7 +442,7 @@
                 			fit_image(t_featured.split('?')[0],468, 318);
                 			fit_image(t_normal.split('?')[0], 222, 147);
                 		}
-                		update_queue();
+                		
                 		
                 		
                 		
@@ -600,6 +560,7 @@
                     resizable: false,
                     position: "top",
                     modal: true,
+                    zIndex: 3010,
                     buttons: {
                         Ok: function() {
                             $( this ).dialog( "close" );
@@ -616,6 +577,7 @@
                 	resizable: false,
                 	position: "top",
                 	modal: true,
+                	zIndex: 3010,
                 	buttons: {
                 		Ok: function(){
                 			$(this).dialog('close');
@@ -631,6 +593,7 @@
                 	resizable: false,
                 	position: "top",
                 	modal: true,
+                	zIndex: 3010,
                 	buttons: {
                 		Ok: function(){
                 			$(this).dialog('close');
@@ -642,18 +605,6 @@
             	get_deliverables_list();
             	
             	// Upload Form Events            		
-           		$('#upload-img-form').css('left', '-10000px');
-           		$('#addimage').click( function() {
-                   	$('#upload').click();
-                   	return false;
-	       		});
-           		$('#upload').change(function(){
-          			var options = {
-                   		beforeSubmit: showRequest,
-                   		success: showResponse
-               		};
-               		$('#upload_form').ajaxSubmit(options);
-               	});
                	
                	$('#new_thumb_form').css('position', 'absolute');
             	$('#new_thumb_form').css('left', '-10000px');
@@ -828,73 +779,10 @@
             	});
             });
             
-            function refresh_kd_edit(kd_type){
-            	$('#edit-kd').attr('kd_type', kd_type);
-            	$.ajax({
-            		url: "get_kd_content.php",
-            		cache: false,
-            		type: "POST",
-            		data: {type: kd_type},
-            		success: function (data){
-            			if (data != 'failed'){
-            				$('#kd-wrapper ul').html(data);
-            				$('.delete-kd-button').click(function(){
-            					var ays = confirm("Are you sure?");
-            					if (ays == true){
-            						var kd_id = $(this).parents('li').attr('kd_id');
-            						var kd_type = $('#edit-kd').attr('kd_type');
-            						$.ajax({
-            							url: "delete_kd.php",
-            							cache: false,
-            							type: "POST",
-            							data: {type: kd_type, id: kd_id},
-            							success: function(data){
-            								if (data == 'success'){
-            									refresh_kd_edit(kd_type);
-            								}
-            							}
-            						});
-            					}
-            				});
-            				if (kd_type == 'keywords'){
-            					get_keywords_list();
-            				} else {
-            					get_deliverables_list();
-            				}
-            			}
-            		}
-            	});
-            }
             
-            function edit_kd_list(kd_type){
-            	$('#edit-kd').dialog('open');
-            	$('#overlay').dialog('close');
-            	$('#edit-multiple-dialog').dialog('close');
-            	refresh_kd_edit(kd_type);
-            }
 			
 			$(document).ready(function(){
-				$('#add-kd-button').click(function(){
-           			var new_name = $('#add-kd').val();
-            		var kd_type = $('#edit-kd').attr('kd_type');
-           			$.ajax({
-            			url: "add_kd.php",
-            			cache: false,
-            			type: "POST",
-            			data: {type: kd_type, new_name: new_name},
-            			success: function(data){
-            				if (data == 'success'){
-            					refresh_kd_edit(kd_type);
-            				} else {
-            					alert(data);
-            				}
-            			}
-        			});
-          		});
-          		$('#done-kd').click(function(){
-          			$('#add-kd').val('');
-          			$('#edit-kd').dialog('close');
-          		});
+				
 				
 				$('.dropdown-nav').megamenu();
 				
@@ -914,12 +802,13 @@
 							}
 							$('#live-images-wrapper').attr('f_active', 'filter');
 							
-							
 							filter_live_images();
 						})
 					}
 				});
 			});
+			
+			
 			
         </script>
     </head>
@@ -958,14 +847,10 @@
                 <section id="image-queue" class="main-block">
                     <header>
                         <h1>image queue</h1>
-                        <a class="add-image" id="addimage" href="#">add an image to the queue</a>
+                        <div id="multiple-upload-wrapper">
+                        	<input type="file" id="file_upload" name="file_upload" />
+                        </div>
                         <!-- really tweaked. don't touch. -->
-                        <div id="upload-img-form">
-                            <form id="upload_form" enctype="multipart/form-data" method="POST" action="upload_image.php">
-                                <input type="file" id="upload" name="uploaded" />
-                                <input type="submit" id="submit_button" value="Upload"/>
-                            </form>	
-                        </div><!-- end upload-form -->
                     </header>
                     <nav>
                         <ul class="left-nav">
@@ -1258,7 +1143,7 @@
 			                                        		
 			                                          	</ul>
 			                                  		</div>
-			                                       	<a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('deliverables')">edit list..</a>
+			                                       	<a class="edit-list edit-kd-deliverables" href="javascript: void(0)">edit list..</a>
 			                                   	</div>
 			                              	</td>
 			                              	<td><div style="margin-left: 40px">
@@ -1272,7 +1157,7 @@
 			                                        		
 			                                          	</ul>
 			                                  		</div>
-			                                       	<a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('keywords')">edit list..</a>
+			                                       	<a class="edit-list edit-kd-keywords" href="javascript: void(0)">edit list..</a>
 			                                   	</div></div>
 			                              	</td>
 			                            </tr>
@@ -1412,7 +1297,7 @@
                                                     <ul id="deliverables-list">
                                                     </ul>
                                                 </div>
-                                                <a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('deliverables')">edit list..</a>
+                                                <a class="edit-list edit-kd-deliverables" href="javascript: void(0)">edit list..</a>
                                             </div>
                                         </div><!-- end float-left -->
 
@@ -1423,7 +1308,7 @@
                                                     <ul id="keywords-list">
                                                     </ul>
                                                 </div>
-                                                <a class="edit-list" href="javascript: void(0)" onclick="edit_kd_list('keywords')">edit list..</a>
+                                                <a class="edit-list edit-kd-deliverables" href="javascript: void(0)">edit list..</a>
                                             </div>
                                         </div><!-- end float-left -->
 

@@ -101,7 +101,7 @@ strong {
 	-moz-box-shadow: 10px 0 14px rgba(0, 0, 0, 0.1), -10px 0 14px rgba(0, 0, 0, 0.1);
 	-webkit-box-shadow: 10px 0 14px rgba(0, 0, 0, 0.1), -10px 0 14px rgba(0, 0, 0, 0.1);
 	box-shadow: 10px 0 14px rgba(0, 0, 0, 0.1), -10px 0 14px rgba(0, 0, 0, 0.1);
-	overflow: hidden;
+	overflow: visible;
 }
 /* *********************
  * HEADER
@@ -184,6 +184,17 @@ strong {
 
 #upload-img-form {
     position: absolute;
+}
+
+
+#multiple-upload-wrapper{
+	position: absolute;
+	right: 70px;
+	top: 56px;
+}
+
+#file_uploadUploader{
+	width: 250px;
 }
 
 .main-block .add-image {
@@ -318,7 +329,7 @@ strong {
 	margin-top: 25px;
 	padding: 0 5px;
 	width: 960px;
-	overflow: hidden;
+	overflow: visible;
 }
 /* GRID VIEW */
 
@@ -951,4 +962,11 @@ ul.dropdown-nav div.mm-item-content {
 	margin-right: 5px;
 	cursor: pointer;
 	margin-top: 4px;
+}
+
+#multiple-upload-wrapper{
+	height: 0px;
+	overflow: visible;
+	width: 250px;
+	z-index: 3000;
 }

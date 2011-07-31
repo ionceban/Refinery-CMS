@@ -5,7 +5,7 @@
 	$response = "";
 	
 	for ($i = 1; $i <= $image_array[0]; $i++){
-		$response .= "<tr class ='list-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
+		$response .= "<tr class='list-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
 		$response .= "<td>";
 		$response .= "<span class='select-wrapper'>";
 		$response .= "<img class='select-toggle' src='images/checkbox-0.png' style='margin-right:5px;' />";
@@ -23,7 +23,9 @@
 		$file_attrs = preg_split('/\./', $image_array[$i]['filename']);
 		$thumber_ext = extension_checker('projs/' . $file_attrs[0] . "_t_thumber");
 		
-		$response .= "<img class='list-thumb' src='projs/" . $file_attrs[0] . "_t_list." . $thumber_ext . "' />";
+		$rand_mod = rand(1, 10000);
+		$response .= "<img class='list-thumb' src='projs/" . $file_attrs[0] . "_t_list." . $thumber_ext;
+		$response .= "?modified=" . $rand_mod . "' />";
 		$response .= "</td>";
 		$response .= "<td>" . $image_array[$i]['project_name'] . "</td>";
 		$response .= "<td>" . $image_array[$i]['filename'] . "</td>";
