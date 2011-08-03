@@ -11,16 +11,22 @@
 	
 
 	$filename = basename($_FILES['Filedata']['name']);
+	$target = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['folder'] . $filename);
 	
-	$query_statement = "SELECT * FROM images WHERE name='" . $filename . "'";
+	$file_attrs = preg_split('/\./', $filename);
+	if (in_array($file_attrs[1], $accepted_formats)){
+		if (!in_array($file_attrs[1], $image_formats)){
+			$filename = $file_attrs[0] . ".ogg";
+		}
+	}
+	
+	$query_statement = "SELECT * FROM images WHERE name LIKE '" . $file_attrs[0] . ".%'";
 	$query = mysql_query($query_statement, $db_conn);
 	$row = mysql_fetch_row($query);
 	
 	if ($row){
 		die("File already exists");
 	}
-	
-	$target = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $_REQUEST['folder'] . $filename);
 	
 	if (move_uploaded_file($_FILES['Filedata']['tmp_name'], $target)){
 		$file_attrs = preg_split('/\./', $target);
