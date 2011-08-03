@@ -18,6 +18,7 @@
 					    			thumber_extension = original_extension;
 					    		} else {
 					    			thumber_extension = 'jpg';
+					    			convert_video(fileObj.name);
 					    		}
 		                	
 		                	var t_thumber = file_body + "_t_thumber." + thumber_extension;
@@ -56,6 +57,7 @@
 		                			fit_image(t_normal.split('?')[0], 222, 147);
 		                		}
 		                		
+		                		
 		                	
 		                	}
 		                } else {
@@ -82,3 +84,15 @@
 				    }
 				});
 			});
+			
+			function convert_video(filename){
+				$.ajax({
+					url: "php/convert_video.php",
+					cache: false,
+					type: "POST",
+					data: {filename: filename},
+					success: function(data){
+						alert(data);
+					}
+				});
+			}
