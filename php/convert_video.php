@@ -1,17 +1,30 @@
 <?php
+	require('config.php');
+	
 	$filename = $_POST['filename'];
 	$file_attrs = preg_split('/\./', $filename);
 	
 	$new_filename = $file_attrs[0] . ".ogg";
 	set_time_limit(0);
 	
-	$old_target = $_SERVER['DOCUMENT_ROOT'] . "refinery-cms/projs/" . $filename;
-	$new_target = $_SERVER['DOCUMENT_ROOT'] . "refinery-cms/projs/" . $new_filename;
-	$ffmpeg2theora_path = $_SERVER['DOCUMENT_ROOT'] . "refinery-cms/php/ffmpeg2theora.exe";
+	$old_target = $_SERVER['DOCUMENT_ROOT'] . "/refinery-cms/projs/" . $filename;
+	$old_target = str_replace('//', '/', $old_target);
 	
-	$command = $ffmpeg2theora_path . " -o " . $new_target . " " . $old_target;
+	$new_target = $_SERVER['DOCUMENT_ROOT'] . "/refinery-cms/projs/" . $new_filename;
+	$new_target = str_replace('//', '/', $new_target);
+	
+	$converter_path = $_SERVER['DOCUMENT_ROOT'] . "/refinery-cms/apps/ffmpeg2theora.";
+	if ($config_OS == 'Windows'){
+		$converter_path .= "exe";
+	} else {
+		$converter_path .= "bin";
+	}
+	$converter_path = str_replace('//', '/', $converter_path);
+	
+	$command = $converter_path . " -o " . $new_target . " -v 10 " . $old_target;
 	
 	shell_exec($command);
+	unlink($old_target);
 	
 	echo "converted";
 ?>
