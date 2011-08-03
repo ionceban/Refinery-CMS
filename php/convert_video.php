@@ -21,7 +21,7 @@
 	}
 	$converter_path = str_replace('//', '/', $converter_path);
 	
-	$command = $converter_path . " -o " . $new_target . " -v 10 " . $old_target;
+	$command = $converter_path . " -o " . $new_target . " -v 10 --max_size 400x480 " . $old_target;
 	
 	shell_exec($command);
 	unlink($old_target);
