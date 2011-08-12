@@ -56,140 +56,28 @@
         <link rel="stylesheet" type="text/css" href="css/dropkick.css" />
         <link rel="stylesheet" type="text/css" href="css/Jcrop.css" />
         <link href="uploadify/uploadify.css" type="text/css" rel="stylesheet" />
-        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.js"></script>
 		<script type="text/javascript" src="uploadify/swfobject.js"></script>
 		<script type="text/javascript" src="uploadify/jquery.uploadify.v2.1.4.min.js"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.dropkick-1.0.0.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/jquery.megamenu.js" type="text/javascript"></script>
-        <script type="text/javascript" src="js/jquery.Jcrop.min.js"></script>
-        <script type="text/javascript" src="js/jquery.form.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.dropkick.js" charset="utf-8"></script>
+        <script type="text/javascript" src="js/jquery/jquery.megamenu.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.jcrop.js"></script>
+        <script type="text/javascript" src="js/jquery/jquery.form.js"></script>
         <script type="text/javascript" src="js/overlay.js"></script>
         <script type="text/javascript" src="js/results.js"></script>
-        <script type="text/javascript" src="js/uploader.js"></script>
+		<script type="text/javascript" src="js/uploader.js"></script>
+		<script type="text/javascript" src="js/images.js"></script>
+		<script type="text/javascript" src="js/jcrop-interactions.js"></script>
 		<script type="text/javascript">
 			var FIT_COUNTER = 0;
 			var NECESSARY_FITS = 0;
 			
 			var SAVE_COUNTER = 0;
 			var NECESSARY_SAVES = 0;
-		
-			function save_image_details(){
-				var scaled_height = $('#thumbnail-selector').css('height').split('px')[0];
-        		var scaled_width = $('#thumbnail-selector').css('width').split('px')[0];
-        		var imgPreloader = new Image();
-        		imgPreloader.src= $('#thumbnail-selector').attr('src');
-        		imgPreloader.onload = function(){
-        			var ajax_thumb = new XMLHttpRequest();
-        			ajax_thumb.open("POST", "get_thumbnail.php", true);
-        			ajax_thumb.onreadystatechange = function(){
-        				if (ajax_thumb.readyState == 4 && ajax_thumb.status == 200){
-        					if (ajax_thumb.responseText == "success"){
-        						var file_attrs = $('#thumbnail-selector').attr('src').split('_t_thumber.');
-        						var t_normal = file_attrs[0] + "_t_normal." + file_attrs[1];
-        						var t_featured = file_attrs[0] + "_t_featured." + file_attrs[1];
-        						var big_file_ext = extension_detect(file_attrs[0].split('projs/')[1] + '.');
-        						
-        						if (big_file_ext == 'jpg' || big_file_ext == 'png' || big_file_ext == 'gif'){
-	        						fit_image(t_featured.split('?')[0], 222, 318);
-	        						fit_image(t_normal.split('?')[0], 99, 147);
-	        					} else {
-	        						fit_image(t_featured.split('?')[0], 468, 318);
-	        						fit_image(t_normal.split('?')[0], 222, 147);
-	        					}
-        						var image_id = parseInt($('#overlay').attr('image_id'));
-								var keywords_string = "";
-								var keywords_list = $('#keywords-list li');
-								var Nkeywords = 0;
-								keywords_list.each(function(){
-									if ($(this).hasClass('selected')){
-										Nkeywords += 1;
-										if (Nkeywords > 1) keywords_string += "_";
-										keywords_string += $(this).attr('keyword_id');
-									}
-								});
-								
-								var deliverables_string = "";
-								var deliverables_list = $('#deliverables-list li');
-								var Ndeliverables = 0;
-								deliverables_list.each(function(){
-									if ($(this).hasClass('selected')){
-										Ndeliverables += 1;
-										if (Ndeliverables > 1) deliverables_string += "_";
-										deliverables_string += $(this).attr('deliverable_id');
-									}
-								});
-								
-								var division_id = $('#division-sel').val();
-								var medium_id = $('#medium-sel').val();
-								var div_disc_id = $('#div-disc-sel').val();
-								var med_disc_id = $('#med-disc-sel').val();
-								var project_name = $('#project').val();
-								var file_name = $('#file-name').val();
-								var file_ext = $('#overlay').attr('file_ext');
-								
-								var day = $('#date-day-sel').val();
-								var month = $('#date-month-sel').val();
-								var year = $('#date-year-sel').val();
-								
-								ajax_save = new XMLHttpRequest();
-								ajax_save.open("POST", "image_save.php", true);
-								ajax_save.onreadystatechange = function(){
-									if (ajax_save.readyState == 4 && ajax_save.status == 200){
-										if (ajax_save.responseText == 'success'){
-											$('#overlay').dialog('close');
-											update_queue();
-											filter_live_images();
-										} else {
-											alert(ajax_save.responseText);
-										}
-									}
-								}
-								ajax_save.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-								var query_string = 'project_name=' + project_name + '&file_name=' + file_name + '&file_ext=' + file_ext;
-								query_string += '&keywords=' + keywords_string + '&deliverables=' + deliverables_string;
-								query_string += '&d_id=' + division_id + '&m_id=' + medium_id + '&md_id=' + med_disc_id;
-								query_string += '&dd_id=' + div_disc_id + '&day=' + day + '&month=' + month;
-								query_string += '&year=' + year + '&image_id=' + image_id;
-								ajax_save.send(query_string);
-        					} else {
-        						alert(ajax_thumb.responseText);
-        					}
-        				}
-        			}
-        			ajax_thumb.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        			var x1 = parseInt($('#thumbnail-selector').attr('vars').split('_')[0]);
-        			var y1 = parseInt($('#thumbnail-selector').attr('vars').split('_')[1]);
-        			var x2 = parseInt($('#thumbnail-selector').attr('vars').split('_')[2]);
-        			var y2 = parseInt($('#thumbnail-selector').attr('vars').split('_')[3]);
-        			
-        			var query_string = "orig_height=" + imgPreloader.height + "&orig_width=" + imgPreloader.width;
-        			query_string += "&scaled_height=" + scaled_height + "&scaled_width=" + scaled_width;
-        			query_string += "&x1=" + x1 + "&y1=" + y1 + "&x2=" + x2 + "&y2=" + y2;
-        			query_string += "&filename=" + $('#thumbnail-selector').attr('src').split('?')[0];
-        			ajax_thumb.send(query_string);
-        		}
-				
-			}
-
-			
-        	
-        	function showCoords(c){
-        		$('#thumbnail-selector').attr('vars', c.x + '_' + c.y + '_' + c.x2 + '_' + c.y2);
-        	}
-        	
         	
         	
         	function edit_dialog(image_id){
-        		/*$.ajax{
-        			url: "image_attributes.php",
-        			cache: false,
-        			type: "POST",
-        			data: {id_list: image_id},
-        			success: function(data){
-        				var image_array = $.parseJSON(data);
-        			}
-        		}*/
         		var ajax_obj = new XMLHttpRequest();
         		ajax_obj.open("POST", "image_attributes.php", true);
         		ajax_obj.onreadystatechange = function(){
@@ -263,57 +151,9 @@
         				refresh_keywords_list(obj['keywords']);
         				$('#overlay').attr('image_id', image_id);
         				$('#thumb_image_id').attr('value', $('#overlay').attr('image_id'));
-        				$('#overlay').dialog('open');
-        				$('.jcrop-holder').remove();
-        				var file_extension = obj['filename'].split('.')[1];
-        				var thumber_extension = extension_detect(obj['filename'].split('.')[0] + '_t_thumber.');
-        				var thumber_filename = obj['filename'].split('.')[0] + '_t_thumber.' + thumber_extension;
-        				var thumber_preloader = new Image();
-        				thumber_preloader.src = 'projs/' + thumber_filename + '?modified=' + Math.floor(Math.random() * 10000);
-        				thumber_preloader.onload = function(){
-        					var original_width = thumber_preloader.width;
-        					var original_height = thumber_preloader.height;
-        					var thumber_width = thumber_preloader.width;
-        					var thumber_height = thumber_preloader.height;
-        					var maxwidth = 383;
-        					var maxheight = 465;
-        					if (thumber_width > maxwidth){
-        						var old_width = thumber_width;
-        						var old_height = thumber_height;
-        						thumber_width = maxwidth;
-        						thumber_height = parseInt((thumber_width * old_height) / old_width) + 1;
-        					}
-        					
-        					if (thumber_height > maxheight){
-        						var old_width = thumber_width;
-        						var old_height = thumber_height;
-        						thumber_height = maxheight;
-        						thumber_width = parseInt((thumber_height * old_width) / old_height) + 1;
-        					}
-        					
-        					var scale = thumber_height / original_height;
-        					var minSelWidth = 0;
-        					var minSelHeight = 0;
-        					
-        					if (file_extension == 'jpg' || file_extension == 'png' || file_extension == 'gif'){
-        						minSelWidth = 222;
-        						minSelHeight = 318;
-        					} else {
-        						minSelWidth = 468;
-        						minSelHeight = 318;
-        					}
-        					
-        					minSelWidth = parseInt(scale * minSelWidth) + 1;
-        					minSelHeight = parseInt(scale * minSelHeight) + 1;
-        					
-	        				$('#thumbnail-selector').replaceWith('<img style="width:' + thumber_width + 'px; height:' + thumber_height + 'px;" src="projs/' + thumber_filename + '?modified=' + Math.floor(Math.random()*10000) + '" id="thumbnail-selector" \/>');
-	        				$('#thumbnail-selector').Jcrop({
-	        					onSelect: showCoords,
-	        					aspectRatio: minSelWidth / minSelHeight,
-	        					minSize: [minSelWidth, minSelHeight]
-	        				});
-	        				$('#thumbnail-selector').attr('vars', '0_0_0_0'); 
-        				}
+						$('#overlay').dialog('open');
+						jcrop_init(image_id, 0);
+						
         			}
         		}
         		ajax_obj.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -363,10 +203,6 @@
             	});
             }
              
-           
-            function showRequest(formData, jqForm, options) {
-                return true;
-            }
             
             function fit_image(image_src, width, height){
             	$.ajax({
@@ -393,112 +229,6 @@
             	ajax_ext.send('base_name=' + base_name);
             	return ajax_ext.responseText;
             }
-           
-            function showThumbRequest(formData, jqForm, options) {
-                return true;
-            }
-            
-            function showThumbResponse(responseText, statusText, xhr, $form)  {
-            	if (responseText != 'failed'){
-            		
-            		var original_extension = responseText.split('.')[1];
-                	var file_body = responseText.split('.')[0];
-                	var file_extension = extension_detect(file_body.split('projs/')[1] + "_t_thumber.");
-                	
-                	var t_thumber = file_body + "_t_thumber." + file_extension;
-                	var t_normal = file_body + "_t_normal." + file_extension;
-                	var t_featured = file_body + "_t_featured." + file_extension;
-                	var t_grid = file_body + "_t_grid." + file_extension;
-                	var t_list = file_body + "_t_list." + file_extension;
-                	
-                	var img_Preloader = new Image();
-                	img_Preloader.src = t_thumber + '?modified=' + Math.floor(Math.random() * 10000);
-                	img_Preloader.onload = function(){
-                		
-                		var old_width = img_Preloader.width;
-                		var old_height = img_Preloader.height;
-                		
-                		var list_height = 50;
-                		var list_width = parseInt((list_height * old_width) / old_height);
-                		if (list_width < 35) list_width = 35;
-                		if (list_width > 200) list_width = 200;
-                		
-                		FIT_COUNTER = 0;
-                		NECESSARY_FITS = 4;
-                		
-                		fit_image(t_list.split('?')[0], list_width, list_height);
-                		
-                		var grid_height = 110;
-                		var grid_width = parseInt((grid_height * old_width) / old_height);
-                		if (grid_width < 97) grid_width = 97;
-                		if (grid_width > 400) grid_width = 400;
-                		
-                		fit_image(t_grid.split('?')[0], grid_width, grid_height);
-                		
-                		if (original_extension == 'jpg' || original_extension == 'png' || original_extension == 'gif'){
-                			fit_image(t_featured.split('?')[0], 222, 318);
-                			fit_image(t_normal.split('?')[0], 99, 147);
-                		} else {
-                			fit_image(t_featured.split('?')[0],468, 318);
-                			fit_image(t_normal.split('?')[0], 222, 147);
-                		}
-                		
-                		
-                		
-                		
-                		var n_original_width = img_Preloader.width;
-        				var n_original_height = img_Preloader.height;
-        				var n_thumber_width = img_Preloader.width;
-        				var n_thumber_height = img_Preloader.height;
-        				var n_maxwidth = 383;
-        				var n_maxheight = 465;
-        				if (n_thumber_width > n_maxwidth){
-        					var n_old_width = n_thumber_width;
-        					var n_old_height = n_thumber_height;
-        					n_thumber_width = n_maxwidth;
-        					n_thumber_height = parseInt((n_thumber_width * n_old_height) / n_old_width) + 1;
-        				}
-        				if (n_thumber_height > n_maxheight){
-        					var n_old_width = n_thumber_width;
-        					var n_old_height = n_thumber_height;
-        					n_thumber_height = n_maxheight;
-        					n_thumber_width = parseInt((n_thumber_height * n_old_width) / n_old_height) + 1;
-        				}
-        				
-        				var n_scale = n_thumber_height / n_original_height;
-        				var n_minSelWidth = 0;
-        				var n_minSelHeight = 0;
-        				
-        				if (original_extension == 'jpg' || original_extension == 'png' || original_extension == 'gif'){
-        					n_minSelWidth = 222;
-        					n_minSelHeight = 318;
-        				} else {
-        					n_minSelWidth = 468;
-        					n_minSelHeight = 318;
-        				}
-       					
-       					n_minSelWidth = parseInt(n_scale * n_minSelWidth) + 1;
-       					n_minSelHeight = parseInt(n_scale * n_minSelHeight) + 1;
-       					
-                		$('.jcrop-holder').remove();
-                		var new_src = 'projs/' + img_Preloader.src.split('projs/')[1];
-                		$('#thumbnail-selector').replaceWith('<img style="width:' + n_thumber_width + 'px; height:'+ n_thumber_height +'px;" src="'+ new_src + '?modified=' + Math.floor(Math.random()*10000) + '" id="thumbnail-selector" \/>');
-
-                		$('#thumbnail-selector').Jcrop({
-	        					onSelect: showCoords,
-	        					aspectRatio: n_minSelWidth / n_minSelHeight,
-	        					minSize: [n_minSelWidth, n_minSelHeight]
-	        				});
-	        			$('#thumbnail-selector').attr('vars', '0_0_0_0');
-                	}
-            	} else {
-            		alert(responseText);
-            	}
-			}
-			
-			
-			
-			
 		
 			
 			$(document).ready(function(){
@@ -613,11 +343,9 @@
             		return false;
             	});
             	$('#thumb_file').change(function(){
-            		var options = {
-            			beforeSubmit: showThumbRequest,
-            			success: showThumbResponse
-            		};
-            		$('#new_thumb_form').ajaxSubmit(options);
+					$('#new_thumb_form').ajaxSubmit({
+						success: showThumbResponse	
+					});
             	});
             		
             	// Select All/None Events
@@ -1181,12 +909,14 @@
                         <li>
                             <strong>information</strong>
                         </li>
-                        <li>
-                            <strong>thumbnail</strong>
-                        </li>
+						<li id="types-selector">
+							<a rel="1" class='selected' href='#'>Portrait</a>
+							<strong>|</strong>
+							<a rel="2" href='#'>Landscape</a>
+						</li>
                         <li class="load-thumbnail">
                             <a id="thumb_form_mask" href="#">load new thumbnail...</a>
-                            <form enctype="multipart/form-data" action="new_thumb.php" id="new_thumb_form">
+                            <form enctype="multipart/form-data" action="php/new_thumb.php" id="new_thumb_form">
                             	<input id="thumb_image_id" type="hidden" name="image_id" value="" />
                             	<input id="thumb_file" type="file" name="uploaded_file" />
                             </form>
@@ -1308,7 +1038,7 @@
                                                     <ul id="keywords-list">
                                                     </ul>
                                                 </div>
-                                                <a class="edit-list edit-kd-deliverables" href="javascript: void(0)">edit list..</a>
+                                                <a class="edit-list edit-kd-keywords" href="javascript: void(0)">edit list..</a>
                                             </div>
                                         </div><!-- end float-left -->
 
@@ -1320,7 +1050,7 @@
                                 </section>
                             </div><!-- end details-wrapper -->
                             <div class="edit-buttons">
-                                <a href="javascript: void(0)" onclick="save_image_details();">save</a>
+                                <a href="javascript: void(0)" onclick="save_single()">save</a>
                                 <a href="javascript: void(0)" onclick="$('#overlay').dialog('close');">cancel</a>
                             </div><!-- end edit-buttons -->
                         </form>

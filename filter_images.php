@@ -22,6 +22,7 @@
 		$map[$row[0]]['project_name'] = $row[4];
 		$map[$row[0]]['medium_name'] = $row[5];
 		$map[$row[0]]['division_name'] = $row[6];
+		$map[$row[0]]['shadowbox'] = $row[7];
 		$map[$row[0]]['deliverables'][0] = 0;
 		$map[$row[0]]['keywords'][0] = 0;
 	}
@@ -65,6 +66,7 @@
 		$response[$response[0]]['project_name'] = $single_image['project_name'];
 		$response[$response[0]]['medium_name'] = $single_image['medium_name'];
 		$response[$response[0]]['division_name'] = $single_image['division_name'];
+		$response[$response[0]]['shadowbox'] = $single_image['shadowbox'];
 		$response[$response[0]]['deliverables'] = $single_image['deliverables'];
 		$response[$response[0]]['keywords'] = $single_image['keywords'];
 	}

@@ -29,6 +29,21 @@
 						}
 					});
 				});
+
+				$(which_list + ' .list-image-item .shadow-toggle').click(function(){
+					var image_id = $(this).parents('.list-image-item:first').attr('image_id');
+					var shadowObj = $(this);
+					$.ajax({
+						url: "php/change_shadowbox.php",
+						cache: false,
+						type: "POST",
+						data: {image_id: image_id},
+						success: function(data){
+							var shadow_type = parseInt(data);
+							shadowObj.attr('src', 'images/shadowbox-' + shadow_type + '.png');
+						}
+					});
+				});
 				
 				$(which_list + ' .list-image-item .edit-button').click(function(){
 					var image_id = $(this).parents('.list-image-item:first').attr('image_id');

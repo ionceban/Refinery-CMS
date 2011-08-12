@@ -31,7 +31,6 @@
 		                	img_Preloader.src = t_thumber;
 		                	img_Preloader.onload = function(){
 		                		
-		                		GLOBAL_COUNTER = 0;
 		                		var old_width = img_Preloader.width;
 		                		var old_height = img_Preloader.height;
 		                		
@@ -40,24 +39,22 @@
 		                		if (list_width < 35) list_width = 35;
 		                		if (list_width > 200) list_width = 200;
 		                		
-		                		fit_image(t_list.split('?')[0], list_width, list_height);
+		                		resize_image(t_list, list_width, list_height);
 		                		
 		                		var grid_height = 110;
 		                		var grid_width = parseInt((grid_height * old_width) / old_height);
 		                		if (grid_width < 97) grid_width = 97;
 		                		if (grid_width > 400) grid_width = 400;
 		                		
-		                		fit_image(t_grid.split('?')[0], grid_width, grid_height);
+		                		resize_image(t_grid, grid_width, grid_height);
 		                		
 		                		if (original_extension == 'jpg' || original_extension == 'png' || original_extension == 'gif'){
-		                			fit_image(t_featured.split('?')[0], 222, 318);
-		                			fit_image(t_normal.split('?')[0], 99, 147);
+		                			resize_image(t_featured, 222, 318);
+		                			resize_image(t_normal, 99, 147);
 		                		} else {
-		                			fit_image(t_featured.split('?')[0], 468, 318);
-		                			fit_image(t_normal.split('?')[0], 222, 147);
+		                			resize_image(t_featured, 468, 318);
+		                			resize_image(t_normal, 222, 147);
 		                		}
-		                		
-		                		
 		                	
 		                	}
 		                } else {
@@ -95,4 +92,40 @@
 						alert(data);
 					}
 				});
+			}
+
+			function showThumbResponse(responseText, statusText, xhr, $form){
+				if (responseText != 'failed'){
+					var response = $.parseJSON(responseText);
+
+					var thumber_path = 'projs/' + response.core_name + '_t_thumber.' + response.new_ext;
+					var normal_path = thumber_path.replace('thumber', 'normal');
+					var featured_path = thumber_path.replace('thumber', 'featured');
+					var grid_path = thumber_path.replace('thumber', 'grid');
+					var list_path = thumber_path.replace('thumber', 'list');
+					
+					NECESSARY_FITS = 4;
+					FIT_COUNTER = 0;
+
+					var old_width = response.new_width;
+					var old_height = response.new_height;
+
+					var list_height = 50;
+					var list_width = parseInt((list_height * old_width) / old_height);
+
+					if (list_width < 35) list_width = 35;
+					if (list_width > 200) list_width = 200;
+
+					resize_image(list_path, list_width, list_height);
+
+					var grid_height = 110;
+					var grid_width = parseInt((grid_height * old_width) / old_height);
+
+					if (grid_width < 97) grid_width = 97;
+					if (grid_width > 400) grid_width = 400;
+
+					resize_image(grid_path, grid_width, grid_height);
+
+					jcrop_init($('#overlay').attr('image_id'), 1);
+				}
 			}

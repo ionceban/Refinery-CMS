@@ -1,6 +1,6 @@
 <?php
-	
-	$accepted_formats = array('jpg', 'png', 'gif', 'mov', 'avi', 'mp4', 'ogg');
+
+	$accepted_formats = array('jpg', 'png', 'gif', 'mp4');
 	$image_formats = array('jpg', 'png', 'gif');
 
 	require('../db_connect.php');
@@ -37,9 +37,9 @@
 		
 		if (in_array($file_attrs[1], $image_formats)){
 			list($image_width, $image_height, $image_src, $image_attrs) = getimagesize($target);
-			if ($image_width < 222 || $image_height < 318){
+			if ($image_width < 500 || $image_height < 400){
 				unlink($target);
-				die("File must be at least 222x318.");
+				die("File must be at least 500x400.");
 			}
 			
 			$thumber_path = $file_attrs[0] . "_t_thumber." . $file_attrs[1];
@@ -47,6 +47,7 @@
 			$featured_path = $file_attrs[0] . "_t_featured." . $file_attrs[1];
 			$list_path = $file_attrs[0] . "_t_list." . $file_attrs[1];
 			$grid_path = $file_attrs[0] . "_t_grid." . $file_attrs[1];
+			$thumbnail_type = 1;
 		} else {
 			$dummy_thumb = "../images/dummy_thumb.jpg";
 			$thumber_path = $file_attrs[0] . "_t_thumber.jpg";
@@ -54,6 +55,7 @@
 			$featured_path = $file_attrs[0] . "_t_featured.jpg";
 			$list_path = $file_attrs[0] . "_t_list.jpg";
 			$grid_path = $file_attrs[0] . "_t_grid.jpg";
+			$thumbnail_type = 2;
 		}
 		
 		$query_statement = "SELECT mediscs.id FROM mediscs,mediums,disciplines WHERE ";
@@ -71,7 +73,7 @@
 		
 		$query = mysql_query($query_statement, $db_conn);
 		$row = mysql_fetch_row($query);
-		
+
 		$dummy_didisc = $row[0];
 		
 		if (in_array($file_attrs[1], $image_formats)){
@@ -102,8 +104,9 @@
 			$year_id = $row[0];
 		}
 		
-		$query_statement = "INSERT INTO images(name,medisc_id,didisc_id,project_id,year_id,date,queued,featured)";
-		$query_statement .= " VALUES('" . $filename . "','" . $dummy_medisc . "','" . $dummy_didisc . "','6','" . $year_id . "','" . $date . "',true,false)";
+		$query_statement = "INSERT INTO images(name,medisc_id,didisc_id,project_id,year_id,date,queued,featured,shadowbox,thumb)";
+		$query_statement .= " VALUES('" . $filename . "','" . $dummy_medisc . "','" . $dummy_didisc . "','1','" . $year_id . "','" . $date . "',true,false,false";
+		$query_statement .= ",'" . $thumbnail_type ."')";
 		$query = mysql_query($query_statement, $db_conn);
 		if (!$query){
 			unlink($target);

@@ -1,3 +1,3 @@
 <?php
-	$config_OS = 'Windows'; // Windows/Unix
+	$config_OS = 'Unix'; // Windows/Unix
 ?>

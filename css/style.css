@@ -514,7 +514,7 @@ ul.dropdown-nav div.mm-item-content {
 #list-block .select-wrapper, #live-list .select-wrapper {
 	display: block;
 	background: #000;
-	width: 34px;
+	width: 51px;
 	height: 19px;
 	overflow: hidden;
 	padding: 5px 0 0 5px;
@@ -969,4 +969,18 @@ ul.dropdown-nav div.mm-item-content {
 	overflow: visible;
 	width: 250px;
 	z-index: 3000;
+}
+
+#types-selector a{
+	font-family: 'HelveticaNeueBold', Arial, sans-serif;
+	font-weight: bold;
+}
+
+#types-selector a.selected{
+	color: #ffffff;
+}
+
+#types-selector strong{
+	margin-left: 5px;
+	margin-right: 5px;
 }

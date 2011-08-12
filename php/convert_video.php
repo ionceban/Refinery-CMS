@@ -24,7 +24,6 @@
 	$command = $converter_path . " -o " . $new_target . " -v 10 " . $old_target;
 	
 	shell_exec($command);
-	unlink($old_target);
 	
 	echo "converted";
 ?>

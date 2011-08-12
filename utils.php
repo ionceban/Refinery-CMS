@@ -53,7 +53,12 @@
 		$grid_file = 'projs/' . $core_name . "_t_grid." . $thumber_ext;
 		$list_file = 'projs/' . $core_name . "_t_list." . $thumber_ext;
 		
-		if (!unlink($original_file)) return "failed delete ";
+		if (!unlink($original_file)) return "failed delete";
+		if ($original_ext == 'ogg'){
+			if (!unlink('projs/' . $core_name . '.' . 'mp4')){
+				return "failed delete";
+			}
+		}
 		if (!unlink($thumber_file)) return "failed delete";
 		if (!unlink($normal_file)) return "failed delete";
 		if (!unlink($featured_file)) return "failed delete";
@@ -74,7 +79,7 @@
 
 	function get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords, $order){
 	
-		$query_statement = "SELECT DISTINCT images.id, images.featured, images.name, images.date, projects.name, mediums.name, divisions.name";
+		$query_statement = "SELECT DISTINCT images.id, images.featured, images.name, images.date, projects.name, mediums.name, divisions.name, images.shadowbox";
 		$query_statement .= " FROM images, projects, mediscs, didiscs, mediums, divisions, disciplines";
 		$query_statement .= ", imgdelivs, imgkeyws, deliverables, keywords WHERE(images.queued=0 AND images.project_id=projects.id AND ";
 		$query_statement .= "images.id=imgdelivs.image_id AND deliverables.id=imgdelivs.deliverable_id AND ";

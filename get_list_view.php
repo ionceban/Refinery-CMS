@@ -15,6 +15,8 @@
 		} else {
 			$response .= "<img class='star-toggle' src='images/dark-star.png' />";
 		}
+
+		$response .= "<img class='shadow-toggle' src='images/shadowbox-" . $image_array[$i]['shadowbox'] . ".png' style='margin-left: 5px;margin-top: 2px' />";
 		
 		$response .= "</span>";
 		$response .= "</td>";
