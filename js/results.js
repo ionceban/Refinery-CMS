@@ -14,18 +14,18 @@
 				$(which_list + ' .list-image-item .star-toggle').click(function(){
 					var image_id = $(this).parents('.list-image-item:first').attr('image_id');
 					var starObj = $(this);
+					var shadowObj = $(this).parents('.select-wrapper:first').find('.shadow-toggle');
 					$.ajax({
 						url: "change_featured.php",
 						cache: false,
 						type: "POST",
 						data: {image_id: image_id},
 						success: function(data){
-							var star_type = parseInt(data);
-							if (star_type == 1){
-								starObj.attr('src', 'images/red-star.png');
-							} else {
-								starObj.attr('src', 'images/dark-star.png');
-							}
+							var response = $.parseJSON(data);
+							var star_type = response.star;
+							var shadow_type = response.shadow;
+							starObj.attr('src', 'images/' + star_type + '-star.png');
+							shadowObj.attr('src', 'images/shadowbox-' + shadow_type + '.png');
 						}
 					});
 				});
@@ -33,13 +33,17 @@
 				$(which_list + ' .list-image-item .shadow-toggle').click(function(){
 					var image_id = $(this).parents('.list-image-item:first').attr('image_id');
 					var shadowObj = $(this);
+					var starObj = $(this).parents('.select-wrapper:first').find('.star-toggle');
 					$.ajax({
 						url: "php/change_shadowbox.php",
 						cache: false,
 						type: "POST",
 						data: {image_id: image_id},
 						success: function(data){
-							var shadow_type = parseInt(data);
+							var response = $.parseJSON(data);
+							var star_type = response.star;
+							var shadow_type = response.shadow;
+							starObj.attr('src', 'images/' + star_type + '-star.png');
 							shadowObj.attr('src', 'images/shadowbox-' + shadow_type + '.png');
 						}
 					});

@@ -16,5 +16,22 @@
 	$query_statement = "UPDATE images SET shadowbox='" . $shadowbox . "' WHERE id='" . $image_id . "'";
 	$query = mysql_query($query_statement, $db_conn);
 
-	echo $shadowbox;
+	if ($shadowbox == 1){
+		$query_statement = "UPDATE images SET images.featured=0 WHERE images.id='" . $image_id . "'";
+		$query = mysql_query($query_statement, $db_conn);
+	}
+
+	$response['shadow'] = $shadowbox;
+
+	$query_statement = "SELECT images.featured FROM images WHERE images.id='" . $image_id . "'";
+	$query = mysql_query($query_statement, $db_conn);
+	$row = mysql_fetch_row($query);
+
+	if ($row[0] == '1'){
+		$response['star'] = 'red';
+	} else {
+		$response['star'] = 'dark';
+	}
+
+	echo json_encode($response);
 ?>
