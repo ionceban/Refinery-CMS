@@ -670,6 +670,23 @@
             						});
             					}
             				});
+							
+							if (kd_type == 'keywords'){
+								$('#kd-wrapper .hide-toggle').click(function(){
+									var keyword_id = $(this).parents('li:first').attr('kd_id');
+									var selectObj = $(this);
+									$.ajax({
+										url: "php/change_hidden.php",
+										cache: false,
+										type: "POST",
+										data: {keyword_id: keyword_id},
+										success: function(data){
+											selectObj.attr('src', 'images/checkbox-' + data + '.png');
+										}
+									});
+								});
+							}
+
             				if (kd_type == 'keywords'){
             					get_keywords_list();
             				} else {

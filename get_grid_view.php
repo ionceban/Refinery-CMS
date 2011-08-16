@@ -25,6 +25,7 @@
 		}
 		
 		$response .= "-star.png' />";
+		$response .= "<img class='shadow-toggle' src='images/shadowbox-" . $image_array[$i]['shadowbox'] . ".png' style='margin-top: 2px; margin-left: 5px' />";
 		$response .= "</div>";
 		$response .= "</div>";
 		$response .= "<span>";

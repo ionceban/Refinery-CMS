@@ -5,12 +5,16 @@
 		die("failed");
 	}
 	
-	$query_statement = "SELECT id, name FROM " . $_POST['type'] . " ORDER BY name";
+	$query_statement = "SELECT id, name, hidden FROM " . $_POST['type'] . " ORDER BY name";
 	$query = mysql_query($query_statement, $db_conn);
 	
 	$response = "";
 	while ($row = mysql_fetch_row($query)){
-		$response .= "<li kd_id='" . $row[0] . "'>" . $row[1] . "<img class='delete-kd-button'";
+		$response .= "<li kd_id='" . $row[0] . "'>";
+		if ($_POST['type'] == 'keywords'){
+			$response .= "<img class='hide-toggle' src='images/checkbox-" . $row[2] . ".png' />";
+		}
+	   	$response .= $row[1] . "<img class='delete-kd-button'";
 		$response .= " src='images/reset-input.png' /></li>";
 	}
 	

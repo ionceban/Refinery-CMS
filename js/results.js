@@ -70,7 +70,7 @@
 			}
 			
 			function assign_grid_events(which_grid){
-				$(which_grid + ' .grid-image-item .select-toggle').click(function(){
+				$(which_grid + ' .select-item .select-toggle').click(function(){
 					var checkbox_type = 1 - parseInt($(this).attr('src').split('checkbox-')[1].split('.')[0]);
 					$(this).attr('src', 'images/checkbox-' + checkbox_type + '.png');
 					if (checkbox_type == 0){
@@ -82,21 +82,40 @@
 					}
 				});
 				
-				$(which_grid + ' .grid-image-item .star-toggle').click(function(){
+				$(which_grid + ' .select-item .star-toggle').click(function(){
 					var image_id = $(this).parents('li:first').attr('image_id');
 					var starObj = $(this);
+					var shadowObj = $(this).parents('.select-item:first').find('.shadow-toggle');
 					$.ajax({
 						url: "change_featured.php",
 						cache: false,
 						type: "POST",
 						data: {image_id: image_id},
 						success: function(data){
-							var star_type = parseInt(data);
-							if (star_type == 1){
-								starObj.attr('src', 'images/red-star.png');
-							} else {
-								starObj.attr('src', 'images/dark-star.png');
-							}
+							var response = $.parseJSON(data);
+							var star_type = response.star;
+							var shadow_type = response.shadow;
+							starObj.attr('src', 'images/' + star_type + '-star.png');
+							shadowObj.attr('src', 'images/shadowbox-' + shadow_type + '.png');
+						}
+					});
+				});
+
+				$(which_grid + ' .select-item .shadow-toggle').click(function(){
+					var image_id = $(this).parents('li:first').attr('image_id');
+					var starObj = $(this).parents('.select-item:first').find('.star-toggle');
+					var shadowObj = $(this);
+					$.ajax({
+						url: "php/change_shadowbox.php",
+						cache: false,
+						type: "POST",
+						data: {image_id: image_id},
+						success: function (data){
+							var response = $.parseJSON(data);
+							var star_type = response.star;
+							var shadow_type = response.shadow;
+							starObj.attr('src', 'images/' + star_type + '-star.png');
+							shadowObj.attr('src', 'images/shadowbox-' + shadow_type + '.png');
 						}
 					});
 				});
