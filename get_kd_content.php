@@ -5,7 +5,13 @@
 		die("failed");
 	}
 	
-	$query_statement = "SELECT id, name, hidden FROM " . $_POST['type'] . " ORDER BY name";
+	$query_statement = "SELECT id, name";
+	
+	if ($_POST['type'] == 'keywords'){
+		$query_statement .= ", hidden";
+	}
+
+   	$query_statement .= " FROM " . $_POST['type'] . " ORDER BY name";
 	$query = mysql_query($query_statement, $db_conn);
 	
 	$response = "";
