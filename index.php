@@ -77,7 +77,7 @@
 			var NECESSARY_SAVES = 0;
         	
         	
-        	function edit_dialog(image_id){
+			function edit_dialog(image_id){
         		var ajax_obj = new XMLHttpRequest();
         		ajax_obj.open("POST", "image_attributes.php", true);
         		ajax_obj.onreadystatechange = function(){

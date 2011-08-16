@@ -297,6 +297,9 @@
         	}
         	
 			function edit_multiple_dialog(id_list){
+				//get_keywords_list();
+				//get_deliverables_list();
+				
 				$('#edit-multiple-dialog').attr('id_list', id_list);
 				
         		$.ajax({
@@ -665,6 +668,12 @@
             									} else if (c_filter == 'search'){
             										search_live_images();
             									}
+
+												if (kd_type == 'keywords'){
+													get_keywords_list();
+												} else {
+													get_deliverables_list();
+												}
             								}
             							}
             						});
@@ -682,6 +691,7 @@
 										data: {keyword_id: keyword_id},
 										success: function(data){
 											selectObj.attr('src', 'images/checkbox-' + data + '.png');
+											get_keywords_list();
 										}
 									});
 								});
