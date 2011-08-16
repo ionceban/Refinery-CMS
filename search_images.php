@@ -13,7 +13,7 @@
 	}
 	
 	$query_statement = "SELECT images.id, images.name, images.date, images.featured, projects.name";
-	$query_statement .= ", mediums.name, divisions.name FROM images, projects, mediums, divisions";
+	$query_statement .= ", mediums.name, divisions.name, images.shadowbox FROM images, projects, mediums, divisions";
 	$query_statement .= ", mediscs, didiscs WHERE (images.medisc_id=mediscs.id AND ";
 	$query_statement .= "images.didisc_id=didiscs.id AND mediscs.medium_id=mediums.id AND images.queued=0 AND ";
 	$query_statement .= "didiscs.division_id=divisions.id AND projects.id=images.project_id AND ";
@@ -35,6 +35,7 @@
 		$map[$row[0]]['project_name'] = $row[4];
 		$map[$row[0]]['medium_name'] = $row[5];
 		$map[$row[0]]['division_name'] = $row[6];
+		$map[$row[0]]['shadowbox'] = $row[7];
 		$map[$row[0]]['deliverables'][0] = 0;
 		$map[$row[0]]['keywords'][0] = 0;
 	}
@@ -78,6 +79,7 @@
 		$response[$response[0]]['project_name'] = $single_image['project_name'];
 		$response[$response[0]]['medium_name'] = $single_image['medium_name'];
 		$response[$response[0]]['division_name'] = $single_image['division_name'];
+		$response[$response[0]]['shadowbox'] = $single_image['shadowbox'];
 		$response[$response[0]]['deliverables'] = $single_image['deliverables'];
 		$response[$response[0]]['keywords'] = $single_image['keywords'];
 	}
