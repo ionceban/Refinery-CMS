@@ -141,8 +141,11 @@
             		type: 'POST',
             		data: {id_list: id_list},
             		success: function(data){
-            			if (data != "success"){
-            				alert("ERROR: Could not publish image(s)");
+						if (data != "success"){
+							update_queue();
+							filter_live_images();
+							$('#queue-select-all').attr('src', 'images/checkbox-0.png');
+            				alert(data);
             			} else {
             				update_queue();
             				filter_live_images();

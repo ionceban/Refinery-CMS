@@ -5,15 +5,15 @@
 	$image_array = list_to_array($_POST['id_list']);
 	$project_name = $_POST['project_name'];
 	
-	$query_statement = "SELECT id FROM projects WHERE name='" . $project_name . "'";
+	$query_statement = "SELECT id FROM projects WHERE name='" . addslashes($project_name) . "'";
 	$query = mysql_query($query_statement, $db_conn);
 	
 	if ($row = mysql_fetch_row($query)){
 		$project_id = $row[0];
 	} else {
-		$query_statement = "INSERT INTO projects(name) VALUES('" . $project_name . "')";
+		$query_statement = "INSERT INTO projects(name) VALUES('" . addslashes($project_name) . "')";
 		mysql_query($query_statement, $db_conn);
-		$query_statement = "SELECT id FROM projects WHERE name='" . $project_name . "'";
+		$query_statement = "SELECT id FROM projects WHERE name='" . addslashes($project_name) . "'";
 		$query = mysql_query($query_statement, $db_conn);
 		$row = mysql_fetch_row($query);
 		

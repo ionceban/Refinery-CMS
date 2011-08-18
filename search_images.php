@@ -8,19 +8,19 @@
 	$query_string = $_POST['query_string'];
 	$order = $_POST['order'];
 	
-	if (!ctype_alnum($query_string)){
+	/*if (!ctype_alnum($query_string)){
 		die("Only numbers and letters allowed");
-	}
+	}*/
 	
 	$query_statement = "SELECT images.id, images.name, images.date, images.featured, projects.name";
 	$query_statement .= ", mediums.name, divisions.name, images.shadowbox FROM images, projects, mediums, divisions";
 	$query_statement .= ", mediscs, didiscs WHERE (images.medisc_id=mediscs.id AND ";
 	$query_statement .= "images.didisc_id=didiscs.id AND mediscs.medium_id=mediums.id AND images.queued=0 AND ";
 	$query_statement .= "didiscs.division_id=divisions.id AND projects.id=images.project_id AND ";
-	$query_statement .= "(images.name LIKE '%" . $query_string . "%'";
-	$query_statement .= " OR projects.name LIKE '%" . $query_string . "%'";
-	$query_statement .= " OR mediums.name LIKE '%" . $query_string . "%'";
-	$query_statement .= " OR divisions.name LIKE '%" . $query_string . "%'))";
+	$query_statement .= "(images.name LIKE '%" . addslashes(addslashes($query_string)) . "%'";
+	$query_statement .= " OR projects.name LIKE '%" . addslashes(addslashes($query_string)) . "%'";
+	$query_statement .= " OR mediums.name LIKE '%" . addslashes(addslashes($query_string)) . "%'";
+	$query_statement .= " OR divisions.name LIKE '%" . addslashes(addslashes($query_string)) . "%'))";
 	$query_statement .= " ORDER BY " . $order;
 	
 	$query = mysql_query($query_statement, $db_conn);

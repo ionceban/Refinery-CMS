@@ -404,6 +404,19 @@
         		
         		$('#edit-multiple-dialog').dialog('open');
         	}
+
+			function save_plus(){
+				++SAVE_COUNTER;
+				if (SAVE_COUNTER == NECESSARY_SAVES){
+					update_queue();
+					var f_active = $('#live-images-wrapper').attr('f_active');
+					if (f_active == 'filter'){
+						filter_live_images();
+					} else if (f_active == 'search'){
+						search_live_images();
+					}
+				}
+			}
         	
 			function save_project_name(id_list, project_name){
 				$.ajax({
@@ -415,21 +428,26 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
 
 			function save_filename(image_id, filename){
+				/* check if the name is valid */
+				if (filename.length > 20){
+					alert('Filname: no more than 20 characters allowed');
+					save_plus();
+					return false;
+				}
+				for (var i = 0; i < filename.length; i += 1){
+					var chr = filename[i];
+					if ((chr < 'a' || chr > 'z') && (chr < 'A' || chr >'Z') && (chr < '0' || chr > '9') && chr != '_'){
+						alert('Filename: only letters, numbers and underlines allowed');
+						save_plus();
+						return false;
+					}
+				}
 				$.ajax({
 					url: "php/save_filename.php",
 					cache: false,
@@ -439,16 +457,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
@@ -464,16 +473,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
@@ -488,16 +488,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
@@ -512,16 +503,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
@@ -536,16 +518,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
@@ -560,16 +533,7 @@
 						if (data != "success"){
 							alert(data);
 						}
-						++SAVE_COUNTER;
-						if (SAVE_COUNTER == NECESSARY_SAVES){
-							update_queue();
-							var f_active = $('#live-images-wrapper').attr('f_active');
-							if (f_active == 'filter'){
-								filter_live_images();
-							} else if (f_active == 'search'){
-								search_live_images();
-							}
-						}
+						save_plus();
 					}
 				});
 			}
