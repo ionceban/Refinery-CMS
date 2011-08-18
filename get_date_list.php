@@ -9,46 +9,6 @@
 	$response = "<select id='";
 	
 	if ($which_dialog == 'single'){
-		$response .= "date-day-sel";
-	} else {
-		$response .= "m-date-day-sel";
-	}
-	
-	$response .= "' name='";
-	
-	if ($which_dialog == 'single'){
-		$response .= "date-day-sel";
-	} else {
-		$response .= "m-date-day-sel";
-	}
-	
-	$response .= "'>";
-	
-	for ($i = 1; $i <= 31; $i++){
-		$response .= "<option value='" .$i . "'";
-		if ($i == $featured_day){
-			$response .= " selected='selected'";
-		}
-		$response .= "'>";
-		
-		if ($i < 10){
-			$response .= "0";
-		}
-		
-		$response .= $i . "</option>";
-	}
-	
-	$response .= "</select>";
-	
-	if ($which_dialog == 'single'){
-		$response .= "<span class='sep'></span>";
-	} else {
-		$response .= "<span class='date-sep'></span>";
-	}
-	
-	$response .= "<select id='";
-	
-	if ($which_dialog == 'single'){
 		$response .= "date-month-sel";
 	} else {
 		$response .= "m-date-month-sel";
@@ -81,6 +41,47 @@
 	
 	
 	$response .= "</select>";
+
+	if ($which_dialog == 'single'){
+		$response .= "<span class='sep'></span>";
+	} else {
+		$response .= "<span class='date-sep'></span>";
+	}
+
+
+	$response .= "<select id='";
+	
+	if ($which_dialog == 'single'){
+		$response .= "date-day-sel";
+	} else {
+		$response .= "m-date-day-sel";
+	}
+	
+	$response .= "' name='";
+	
+	if ($which_dialog == 'single'){
+		$response .= "date-day-sel";
+	} else {
+		$response .= "m-date-day-sel";
+	}
+	
+	$response .= "'>";
+	
+	for ($i = 1; $i <= 31; $i++){
+		$response .= "<option value='" .$i . "'";
+		if ($i == $featured_day){
+			$response .= " selected='selected'";
+		}
+		$response .= "'>";
+		
+		if ($i < 10){
+			$response .= "0";
+		}
+		
+		$response .= $i . "</option>";
+	}
+	
+	$response .= "</select>";	
 	
 	if ($which_dialog == 'single'){
 		$response .= "<span class='sep'></span>";
@@ -114,7 +115,7 @@
 		if ($row[0] == $featured_year){
 			$response .= " selected='selected'";
 		}
-		$response .= ">" . $row[0] . "</option>";
+		$response .= ">" . $row[0][2] . $row[0][3] . "</option>";
 	}
 	
 	$response .= "</select>";

@@ -1,4 +1,4 @@
-			function get_keywords_list(){
+			function get_keywords_list(keyw_arr, which_dialog){
             	
             	$.ajax({
             		url: "get_keywords_list.php",
@@ -12,6 +12,28 @@
             					$(this).addClass('selected');
             				}
             			});
+						$('#m-keywords-list .select-toggle').click(function(evt){
+							evt.stopPropagation();
+							var checkbox = $(this);
+							var keyword_id = checkbox.parents('li:first').attr('keyword_id');
+							$.ajax({
+								url: "php/change_hidden.php",
+								cache: false,
+								type: "POST",
+								data: {keyword_id: keyword_id},
+								success: function(data){
+									var keyw_arr = new Array();
+									keyw_arr[0] = 0;
+									$('#m-keywords-list li.selected').each(function(){
+										keyw_arr[0] += 1;
+										keyw_arr[keyw_arr[0]] = parseInt($(this).attr('keyword_id'));
+									});
+									get_keywords_list(keyw_arr, 'multiple');
+								}
+							});
+
+						});
+
             			$('#keywords-list').html(data);
             			$('#keywords-list li').click(function(){
             				if ($(this).hasClass('selected')){
@@ -19,7 +41,31 @@
             				} else {
             					$(this).addClass('selected');
             				}
-            			})
+            			});
+						$('#keywords-list .select-toggle').click(function(evt){
+							evt.stopPropagation();
+							var checkbox = $(this);
+							var keyword_id = checkbox.parents('li:first').attr('keyword_id');
+							$.ajax({
+								url: "php/change_hidden.php",
+								cache: false,
+								type: "POST",
+								data: {keyword_id: keyword_id},
+								success: function(data){
+									var keyw_arr = new Array();
+									keyw_arr[0] = 0;
+									$('#keywords-list li.selected').each(function(){
+										keyw_arr[0] += 1;
+										keyw_arr[keyw_arr[0]] = parseInt($(this).attr('keyword_id'));
+									});
+									get_keywords_list(keyw_arr, 'single');
+								}
+							});
+						});
+
+						if (!(keyw_arr === undefined)){
+							refresh_keywords_list(keyw_arr, which_dialog);
+						}
             		}
             	});
             }
@@ -282,23 +328,32 @@
         	}
         	
         	
-        	function refresh_keywords_list(keyw_arr){
+        	function refresh_keywords_list(keyw_arr, which_dialog){
         		var keyword_state = new Array();
         		for (var i = 1; i <= keyw_arr[0]; i += 1){
         			keyword_state[parseInt(keyw_arr[i])] = 'selected';
         		}
-        		$('#keywords-list li').removeClass('selected');
-        		$('#keywords-list li').each(function(){
-        			var keyword_id = parseInt($(this).attr('keyword_id'));
-        			if (keyword_state[keyword_id] == 'selected'){
-        				$(this).addClass('selected');
-        			}
-        		});
+
+				if (which_dialog == 'single'){
+        			$('#keywords-list li').removeClass('selected');
+        			$('#keywords-list li').each(function(){
+        				var keyword_id = parseInt($(this).attr('keyword_id'));
+        				if (keyword_state[keyword_id] == 'selected'){
+        					$(this).addClass('selected');
+        				}
+        			});
+				} else {
+					$('#m-keywords-list li').removeClass('selected');
+					$('#m-keywords-list li').each(function(){
+						var keyword_id = parseInt($(this).attr('keyword_id'));
+						if (keyword_state[keyword_id] == 'selected'){
+							$(this).addClass('selected');
+						}
+					});
+				}
         	}
         	
 			function edit_multiple_dialog(id_list){
-				//get_keywords_list();
-				//get_deliverables_list();
 				
 				$('#edit-multiple-dialog').attr('id_list', id_list);
 				

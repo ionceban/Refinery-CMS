@@ -83,73 +83,22 @@
         		ajax_obj.onreadystatechange = function(){
         			if (ajax_obj.readyState == 4 && ajax_obj.status == 200){
         				var obj = jQuery.parseJSON(ajax_obj.responseText);
-        				var cYear = parseInt(obj.date.split('-')[0]);
-        				var cMonth = parseInt(obj.date.split('-')[1]);
-        				var cDay = parseInt(obj.date.split('-')[2]);
-        				var DaySelect = "<select class='custom' name='date-day-sel' id='date-day-sel' style='display:none'>";
-        				for (var i = 1; i <= 31; i = i + 1){
-        					DaySelect += "<option value='" + i + "'";
-        					if (i == cDay) DaySelect += " selected='selected'";
-        					DaySelect += ">";
-        					if (i < 10) DaySelect += "0";
-        					DaySelect += i;
-        					DaySelect += "<\/option>";
-        				}
-        				DaySelect += "<\/select>";
         				
-        				var MonthSelect = "<select class='custom' name='date-month-sel' id='date-month-sel' style='display:none'>";
-        				for (var i = 1; i <= 12; i = i + 1){
-        					MonthSelect += "<option value='" + i + "'";
-        					if (i == cMonth) MonthSelect += " selected='selected'";
-        					MonthSelect += ">";
-        					if (i < 10) MonthSelect += "0";
-        					MonthSelect += i;
-        					MonthSelect += "<\/option>";
-        				}
-        				MonthSelect += "<\/select>";
-        				
-        				var YearSelect = "<select class='custom' name='date-year-sel' id='date-year-sel' style='display:none'>";
-        				for (var i = 1990 ; i <= 2020; i = i + 1){
-        					YearSelect += "<option value='" + i + "'";
-        					if (i == cYear) YearSelect += " selected='selected'";
-        					YearSelect += ">";
-        					YearSelect += i;
-        					YearSelect += "<\/option>";
-        				}
-        				YearSelect += "<\/select>";
-        				
+						var cYear = obj.date.split('-')[0];
+						var cMonth = obj.date.split('-')[1];
+						var cDay = obj.date.split('-')[2];
+
+						refresh_overlay_date(cDay, cMonth, cYear, 'single');
+
         				$('#project').attr('value', obj['project_name']);
         				$('#file-name').attr('value', obj['filename'].split('.')[0]);
-        				$('#overlay').attr('file_ext', obj['filename'].split('.')[1]);
-        				
-        				$('#dk_container_date-day-sel').remove();
-        				$('#date-day-sel').replaceWith(DaySelect);
-        				$('#date-day-sel').dropkick();
-        				$('#dk_container_date-day-sel .dk_options').css("width", "40px");
-        				
-        				$('#dk_container_date-month-sel').remove();
-        				$('#date-month-sel').replaceWith(MonthSelect);
-        				$('#date-month-sel').dropkick();
-        				$('#dk_container_date-month-sel .dk_options').css("width", "40px");
-        				
-        				$('#dk_container_date-year-sel').remove();
-        				$('#date-year-sel').replaceWith(YearSelect);
-        				$('#date-year-sel').dropkick();
-        				$('#dk_container_date-year-sel .dk_options').css("width", "56px");
-        				
-        				if (navigator.appName == "Microsoft Internet Explorer"){
-        					$('#dk_container_date-day-sel').css('margin-right', '15px');
-        					$('#dk_container_date-month-sel').css('margin-right', '15px');
-        					$('#dk_container_date-day-sel .dk_options').css('right', '-15px');
-        					$('#dk_container_date-month-sel .dk_options').css('right', '-15px');
-        					$('#dk_container_date-year-sel .dk_options').css('right', '-30px');
-        				}
         				
         				refresh_overlay_mediums(obj['medium_id'], obj['medium_disc_id'], 'single');
         				refresh_overlay_divisions(obj['division_id'], obj['division_disc_id'], 'single');
-        				refresh_deliverables_list(obj['deliverable']);
-        				refresh_keywords_list(obj['keywords']);
-        				$('#overlay').attr('image_id', image_id);
+        				refresh_deliverables_list(obj['deliverable'], 'single');
+        				refresh_keywords_list(obj['keywords'], 'single');
+						
+						$('#overlay').attr('image_id', image_id);
         				$('#thumb_image_id').attr('value', $('#overlay').attr('image_id'));
 						$('#overlay').dialog('open');
 						jcrop_init(image_id, 0);
@@ -534,6 +483,17 @@
 						})
 					}
 				});
+
+				$('#live-show-all').click(function(){
+					$('#live-filter img').attr('src', 'images/checkbox-0.png');
+					if ($('#live-images-wrapper').attr('f_active') == 'disabled'){
+						$('#apply-filters-poster').hide();
+						$('#live-images-wrapper').fadeIn('slow');
+					}
+					$('#live-images-wrapper').attr('f_active', 'filter');
+
+					filter_live_images();
+				});
 			});
 			
 			
@@ -658,7 +618,13 @@
                                 <a id="live-list-btn" class="list-view selected" href="javascript: void(0)">list</a>
                             </li>
                         </ul>
-                        <ul class="right-nav dropdown-nav">
+						<ul class="right-nav dropdown-nav">
+							<li style="width:100px">
+								<a id="live-show-all" style="width: 50px; overflow: visible" href="javascript: void(0)">
+								show all
+                            	</a>
+
+							</li>
                             <li style="width:90px">
                                 <a href="javascript: void(0)">
 								search

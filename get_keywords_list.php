@@ -8,7 +8,7 @@
 	
 	while ($row = mysql_fetch_row($query)){
 		$response .= "<li keyword_id='" . $row[0] . "'>";
-		$response .= "<img src='images/checkbox-". $row[2] . ".png' />";
+		$response .= "<img class='select-toggle' src='images/checkbox-". $row[2] . ".png' />";
 	   	$response .= $row[1] . "</li>";
 	}
 	
