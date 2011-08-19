@@ -51,6 +51,13 @@
 		$new_grid = "../projs/" . $filename . "_t_grid." . $thumber_extension;
 
 		rename($old_file, $new_file);
+		
+		if ($file_attrs[1] == 'ogg'){
+			$old_mp4 = "../projs/" . $file_attrs[0] . ".mp4";
+			$new_mp4 = "../projs/" . $filename . ".mp4";
+			rename($old_mp4, $new_mp4);
+		}
+
 		rename($old_thumber, $new_thumber);
 		rename($old_normal, $new_normal);
 		rename($old_featured, $new_featured);
