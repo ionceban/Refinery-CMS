@@ -71,7 +71,6 @@ li {
 	list-style: none;
 }
 strong {
-	font-family: 'HelveticaNeueBold', Arial, sans-serif;
 	font-weight: bold;
 }
 .rounded {
@@ -151,7 +150,6 @@ strong {
 	display: block;
 	float: left;
 	font-size: 13px;
-	font-weight: bold;
 	line-height: 42px;
 	margin:	0;
 	padding: 0 15px;
@@ -379,7 +377,6 @@ strong {
 	width: 46px;
 	height: 14px;
 	font-size: 11px;
-	font-weight: bold;
 	color: #fff;
 	text-align: center;
 	background: #bfbfbf;
@@ -502,11 +499,10 @@ ul.dropdown-nav div.mm-item-content {
 #list-block td, #live-list td{
 	font-size: 11px;
 	color: #333333;
-	font-weight: bold;
 	padding: 4px 0 3px;
 	border-bottom: 1px solid #ccc;
 	text-align: center;
-	font-family: 'HelveticaNeueBold', Arial, sans-serif;
+	
 }
 #list-block td img, #live-list td img {
 	border: 1px solid #b5b5b5;

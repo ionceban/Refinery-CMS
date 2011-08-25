@@ -21,7 +21,6 @@
 	$query_statement .= " OR projects.name LIKE '%" . addslashes(addslashes($query_string)) . "%'";
 	$query_statement .= " OR mediums.name LIKE '%" . addslashes(addslashes($query_string)) . "%'";
 	$query_statement .= " OR divisions.name LIKE '%" . addslashes(addslashes($query_string)) . "%'))";
-	$query_statement .= " ORDER BY " . $order;
 	
 	$query = mysql_query($query_statement, $db_conn);
 	

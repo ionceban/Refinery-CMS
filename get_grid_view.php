@@ -5,7 +5,7 @@
 	$response = "";
 	
 	for ($i = 1; $i <= $image_array[0]; $i++){
-		$response .= "<li class='grid-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
+		$response .= "<li id='grid-image-item-" . $image_array[$i]['image_id'] . "' class='grid-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
 		$response .= "<div class='img-wrapper'>";
 		
 		$file_attrs = preg_split('/\./', $image_array[$i]['filename']);

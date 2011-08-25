@@ -5,7 +5,7 @@
 	$response = "";
 	
 	for ($i = 1; $i <= $image_array[0]; $i++){
-		$response .= "<tr class='list-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
+		$response .= "<tr id='list-image-item-" . $image_array[$i]['image_id'] . "' class='list-image-item' image_id='" . $image_array[$i]['image_id'] . "'>";
 		$response .= "<td>";
 		$response .= "<span class='select-wrapper'>";
 		$response .= "<img class='select-toggle' src='images/checkbox-0.png' style='margin-right:5px;' />";

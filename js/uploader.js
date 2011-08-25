@@ -106,6 +106,7 @@
 					
 					NECESSARY_FITS = 4;
 					FIT_COUNTER = 0;
+					ImageToFit = $('#overlay').attr('image_id');
 
 					var old_width = response.new_width;
 					var old_height = response.new_height;

@@ -1,0 +1,34 @@
+// CMS Application v2
+
+function app_list_events(id_list){
+	for (var i = 1; i <= id_list[0]; i += 1){
+		var parent_id = 'list-image-item-' + id_list[i];
+		
+		$(parent_id + ' .select-toggle').click(function(){
+
+		});
+
+		$(parent_id + ' .
+
+		console.log(parent_id);
+	}
+}
+
+function app_grid_events(id_list){
+	for (var i = 1; i <= id_list[0]; i += 1){
+		var parent_id = 'grid-image-item-' + id_list[i];
+		console.log(parent_id);
+	}
+}
+
+
+function app_remove_view(image_id){
+	$('#list-image-item-' + image_id).remove();
+	$('#grid-image-item-' + image_id).remove();
+}
+
+function app_replace_view(image_id){
+	// replace list view
+
+	// replace grid view
+}

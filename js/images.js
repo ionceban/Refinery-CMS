@@ -14,7 +14,17 @@ function resize_image(image_src, new_width, new_height){
 
 			++FIT_COUNTER;
 			if (FIT_COUNTER == NECESSARY_FITS){
+				/*if (ImageToFit != '-1'){
+					var dummy = new Array();
+					dummy[0] = 1;
+					dummy[1] = ImageToFit;
+
+					App_refresh_images(dummy);
+
+					ImageToFit = -1;
+				}*/
 				update_queue();
+				filter_live_images();
 			}
 		}
 	});

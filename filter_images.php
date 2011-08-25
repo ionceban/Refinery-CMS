@@ -6,9 +6,8 @@
 	$Divisions = $_POST['divisions'];
 	$Deliverables = $_POST['deliverables'];
 	$Keywords = $_POST['keywords'];
-	$order = $_POST['order'];
 
-	$query_statement = get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords, $order);
+	$query_statement = get_filter_query($Mediums, $Divisions, $Deliverables, $Keywords);
 	
 	$query = mysql_query($query_statement, $db_conn);
 	

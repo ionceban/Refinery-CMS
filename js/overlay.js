@@ -408,13 +408,14 @@
 			function save_plus(){
 				++SAVE_COUNTER;
 				if (SAVE_COUNTER == NECESSARY_SAVES){
-					update_queue();
+					App_refresh_images(ImagesToSave);
+					/*update_queue();
 					var f_active = $('#live-images-wrapper').attr('f_active');
 					if (f_active == 'filter'){
 						filter_live_images();
 					} else if (f_active == 'search'){
 						search_live_images();
-					}
+					}*/
 				}
 			}
         	
@@ -591,6 +592,8 @@
 			}
 			
 			function save_multiple(id_list){
+				$('#queue-select-all').attr('src', 'images/checkbox-0.png');
+
 				var project_confirm = parseInt($('#project-confirm').attr('src').split('checkbox-')[1].split('.')[0]);
 				var date_confirm = parseInt($('#date-confirm').attr('src').split('checkbox-')[1].split('.')[0]);
 				var medisc_didisc_confirm = parseInt($('#medisc-didisc-confirm').attr('src').split('checkbox-')[1].split('.')[0]);

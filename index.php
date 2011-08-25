@@ -69,6 +69,7 @@
 		<script type="text/javascript" src="js/uploader.js"></script>
 		<script type="text/javascript" src="js/images.js"></script>
 		<script type="text/javascript" src="js/jcrop-interactions.js"></script>
+		<script type="text/javascript" src="js/application.js"></script>
 		<script type="text/javascript">
 			var FIT_COUNTER = 0;
 			var NECESSARY_FITS = 0;
@@ -78,6 +79,9 @@
         	
         	
 			function edit_dialog(image_id){
+				ImagesToSave[0] = 1;
+				ImagesToSave[1] = image_id;
+
         		var ajax_obj = new XMLHttpRequest();
         		ajax_obj.open("POST", "image_attributes.php", true);
         		ajax_obj.onreadystatechange = function(){
@@ -236,6 +240,7 @@
 				
 				// Overlay Init
 				$( "#overlay" ).dialog({
+					dialogClass: "main-edit-dialog",
                 	autoOpen: false,
                     width: "970",
                     draggable: false,
@@ -249,7 +254,9 @@
                         }
                     }
 
-                });
+				});
+
+				$('.ui-dialog.main-edit-dialog').css('position', 'fixed');
                 
                 $('#edit-multiple-dialog').dialog({
                 	autoOpen: false,
@@ -324,32 +331,6 @@
             	
             	// Delete Multiple
             	
-            	$('#queue-delete-multiple').click(function(){
-            		if ($('#list-btn').hasClass('selected')){
-            			var id_list = "";
-            			$('#list-block .select-toggle').each(function(){
-            				var current_id = $(this).parents('.list-image-item:first').attr('image_id');
-            				var select_type = $(this).attr('src').split('checkbox-')[1].split('.png')[0];
-            				if (select_type == '1'){
-            					if (id_list != "") id_list += "_";
-            					id_list += current_id;
-            				}
-            			});
-            			if (id_list != "") delete_images(id_list, 0);
-            		} else {
-            			var id_list = "";
-            			$('#grid-block-image .select-toggle').each(function(){
-            				var current_id = $(this).parents('.grid-image-item:first').attr('image_id');
-            				var select_type = $(this).attr('src').split('checkbox-')[1].split('.png')[0];
-            				if (select_type == '1'){
-            					if (id_list != "") id_list += "_";
-            					id_list += current_id;
-            				}
-            			});
-            			if (id_list != "") delete_images(id_list, 0);
-            		}
-            	});
-            	
             	$('#live-delete-multiple').click(function(){
             		if ($('#live-list-btn').hasClass('selected')){
             			var id_list = "";
@@ -378,7 +359,7 @@
             	
             	// Publish multiple
             	
-            	$('#queue-publish-multiple').click(function(){
+            	/*$('#queue-publish-multiple').click(function(){
             		if ($('#list-btn').hasClass('selected')){
             			var id_list = "";
             			$('#list-block .select-toggle').each(function(){
@@ -402,11 +383,11 @@
             			});
             			if (id_list != "") publish_images(id_list);
             		}
-            	});
+				});*/
             	
             	// Edit multiple
             	
-            	$('#live-edit-multiple').click(function(){
+            	/*$('#live-edit-multiple').click(function(){
             		if ($('#live-list-btn').hasClass('selected')){
             			var id_list = "";
             			$('#live-list .select-toggle').each(function(){
@@ -430,17 +411,21 @@
             			});
             			if (id_list != "") edit_multiple_dialog(id_list);
             		}
-            	});
+				}); */
             	
-            	$('#queue-edit-multiple').click(function(){
-            		if ($('#list-btn').hasClass('selected')){
+            	/*$('#queue-edit-multiple').click(function(){
+					if ($('#list-btn').hasClass('selected')){
+						ImagesToSave[0] = 0;
             			var id_list = "";
             			$('#list-block .select-toggle').each(function(){
             				var current_id = $(this).parents('.list-image-item:first').attr('image_id');
             				var checkbox_type = parseInt($(this).attr('src').split('checkbox-')[1].split('.')[0]);
             				if (checkbox_type == 1){
             					if (id_list != "") id_list += "_";
-            					id_list += current_id; 
+								id_list += current_id;
+
+								ImagesToSave[0] += 1;
+								ImagesToSave[ImagesToSave[0]] = current_id;	
             				}
             			});
             			if (id_list != "") edit_multiple_dialog(id_list);
@@ -456,7 +441,7 @@
             			});
             			if (id_list != "") edit_multiple_dialog(id_list);
             		}
-            	});
+				});*/
             });
             
             
@@ -503,7 +488,7 @@
 			
         </script>
     </head>
-    <body onload="update_queue(); ">
+    <body onload="update_queue();">
         <div id="container">
             <header id="header">
                 <h1 id="logo">
@@ -571,10 +556,10 @@
                         </div>
                     </nav>
                     <section class="view-container">
-                        <ul class="grid-block" id="grid-block-image">
+                        <ul class="grid-block holdall holdall-queue" id="grid-block-image">
                         </ul>
 
-                        <section id="list-block">
+                        <section id="list-block" class="holdall holdall-queue">
                             <table>
                                 <thead>
                                 <th></th>
@@ -658,9 +643,9 @@
                                 </a>
                                 <div id="live-sort" class="filter-dropdown">
                                 	<ul>
-                                		<li class='selected' order="images.name"><span>a - z</span></li>
-                                		<li order="images.name DESC"><span>z - a</span></li>
-                                		<li order="images.date DESC, images.id DESC"><span>date</span></li>
+                                		<li class='selected' order="az"><span>a - z</span></li>
+                                		<li order="za"><span>z - a</span></li>
+                                		<li order="date"><span>date</span></li>
                                 	</ul>
                                 </div>
                             </li>
@@ -672,10 +657,10 @@
                     <section class="view-container">
                     	<span id="apply-filters-poster" class="apply-filters"></span>
                     	<section id="live-images-wrapper" f_active="disabled">
-	                    	<ul id="live-grid" class="grid-block">
+	                    	<ul id="live-grid" class="grid-block holdall holdall-live">
 	                    	</ul>
 	                    	
-	                        <section id="live-list">
+	                        <section id="live-list" class="holdall holdall-live">
 	                            <table>
 	                                <thead>
 	                                <th></th>

@@ -81,16 +81,7 @@ function jcrop_init(image_id, create_initial){
 function jcrop_get_thumbnail(image_id){
 	var jcrop_coords = $('#thumbnail-selector').attr('jcrop_coords');
 	if (jcrop_coords == '0_0_0_0'){
-		++SAVE_COUNTER;
-		if (SAVE_COUNTER == NECESSARY_SAVES){
-			update_queue();
-			var f_active = $('#live-images-wrapper').attr('f_active');
-			if (f_active == 'filter'){
-				filter_live_images();
-			} else if (f_active == 'search'){
-				search_live_images();
-			}
-		}
+		save_plus();
 		return false;
 	}
 
@@ -130,16 +121,7 @@ function jcrop_get_thumbnail(image_id){
 				});
 			}
 
-			++SAVE_COUNTER;
-			if (SAVE_COUNTER == NECESSARY_SAVES){
-				update_queue();
-				var f_active = $('#live-images-wrapper').attr('f_active');
-				if (f_active == 'filter'){
-					filter_live_images();
-				} else if (f_active == 'search'){
-					search_live_images();
-				}
-			}
+			save_plus();
 		}
 	});
 }
