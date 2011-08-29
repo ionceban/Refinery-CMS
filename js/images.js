@@ -1,4 +1,4 @@
-function resize_image(image_src, new_width, new_height){
+function resize_image(image_src, new_width, new_height, file_type){
 	$.ajax({
 		url: "php/fit_image.php",
 		cache: false,
@@ -6,7 +6,8 @@ function resize_image(image_src, new_width, new_height){
 		data: {
 			image_src: image_src,
 			new_width: new_width,
-			new_height: new_height
+			new_height: new_height,
+			file_type: file_type
 		}, success: function(data){
 			if (data != 'success'){
 				alert(data);

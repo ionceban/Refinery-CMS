@@ -39,21 +39,21 @@
 		                		if (list_width < 35) list_width = 35;
 		                		if (list_width > 200) list_width = 200;
 		                		
-		                		resize_image(t_list, list_width, list_height);
+		                		resize_image(t_list, list_width, list_height, 'jpg');
 		                		
 		                		var grid_height = 110;
 		                		var grid_width = parseInt((grid_height * old_width) / old_height);
 		                		if (grid_width < 97) grid_width = 97;
 		                		if (grid_width > 400) grid_width = 400;
 		                		
-		                		resize_image(t_grid, grid_width, grid_height);
+		                		resize_image(t_grid, grid_width, grid_height, 'jpg');
 		                		
 		                		if (original_extension == 'jpg' || original_extension == 'png' || original_extension == 'gif'){
-		                			resize_image(t_featured, 222, 318);
-		                			resize_image(t_normal, 99, 147);
+		                			resize_image(t_featured, 222, 318, original_extension);
+		                			resize_image(t_normal, 99, 147, original_extension);
 		                		} else {
-		                			resize_image(t_featured, 468, 318);
-		                			resize_image(t_normal, 222, 147);
+		                			resize_image(t_featured, 468, 318, original_extension);
+		                			resize_image(t_normal, 222, 147, original_extension);
 		                		}
 		                	
 		                	}
@@ -117,7 +117,7 @@
 					if (list_width < 35) list_width = 35;
 					if (list_width > 200) list_width = 200;
 
-					resize_image(list_path, list_width, list_height);
+					resize_image(list_path, list_width, list_height, 'jpg');
 
 					var grid_height = 110;
 					var grid_width = parseInt((grid_height * old_width) / old_height);
@@ -125,7 +125,7 @@
 					if (grid_width < 97) grid_width = 97;
 					if (grid_width > 400) grid_width = 400;
 
-					resize_image(grid_path, grid_width, grid_height);
+					resize_image(grid_path, grid_width, grid_height, 'jpg');
 
 					jcrop_init($('#overlay').attr('image_id'), 1);
 				}

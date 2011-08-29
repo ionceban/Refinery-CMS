@@ -128,4 +128,60 @@
 		
 		return $query_statement;
 	}
+
+	function create_av_watermark($image_path, $watermark_path){
+		list($source_width, $source_height, $source_type) = getimagesize($image_path);
+
+		if ($source_type === NULL){
+			return false;
+		}
+
+		switch ($source_type){
+			case IMAGETYPE_GIF:
+				$source_gd_image = imagecreatefromgif($image_path);
+				break;
+			case IMAGETYPE_JPEG:
+				$source_gd_image = imagecreatefromjpeg($image_path);
+				break;
+			case IMAGETYPE_PNG:
+				$source_gd_image = imagecreatefrompng($image_path);
+				break;
+			default:
+				return false;
+		}
+		imagealphablending($source_gd_image, true);
+
+		$overlay_gd_image = imagecreatefrompng($watermark_path);
+		imagealphablending($overlay_gd_image, true);
+		$overlay_width = imagesx($overlay_gd_image);
+		$overlay_height = imagesy($overlay_gd_image);
+
+		imagecopy(
+			$source_gd_image,
+			$overlay_gd_image,
+			intval(($source_width - $overlay_width) / 2),
+			intval(($source_height - $overlay_height) / 2),
+			0,
+			0,
+			$overlay_width,
+			$overlay_height
+		);
+
+		switch ($source_type){
+			case IMAGETYPE_GIF:
+				imagegif($source_gd_image, $image_path);
+				break;
+			case IMAGETYPE_JPEG:
+				imagejpeg($source_gd_image, $image_path);
+				break;
+			case IMAGETYPE_PNG:
+				imagepng($source_gd_image, $image_path);
+				break;
+			default:
+				return false;
+		}
+
+		imagedestroy($source_gd_image);
+		imagedestroy($overlay_gd_image);
+	}
 ?>

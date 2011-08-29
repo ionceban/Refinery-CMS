@@ -76,7 +76,7 @@
 	} else {
 		imagegif($dest_image, $normal_path);
 		imagegif($dest_image, $featured_path);
-	} 
+	}
 
 	echo "success"; 
 ?>

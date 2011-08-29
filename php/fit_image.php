@@ -1,4 +1,7 @@
 <?php
+
+	require('../utils.php');
+
 	if (!$_POST['image_src']){
 		die("Please select an image");
 	}
@@ -58,6 +61,10 @@
 		imagepng($dest_image, $image_src);
 	} else {
 		imagegif($dest_image, $image_src);
+	}
+
+	if ($_POST['file_type'] != 'jpg' && $_POST['file_type'] != 'png' && $_POST['file_type'] != 'gif'){
+		create_av_watermark($image_src, '../images/av_watermark.png');
 	}
 	
 	echo "success";

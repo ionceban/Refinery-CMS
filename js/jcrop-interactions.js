@@ -111,11 +111,11 @@ function jcrop_get_thumbnail(image_id){
 						var featured_path = 'projs/' + file_attrs[0] + "_t_featured." + CurrentImage.thumber_ext;
 						
 						if (parseInt(CurrentImage.thumb) == 1){
-							resize_image(normal_path, 99, 147);
-							resize_image(featured_path, 222, 318);
+							resize_image(normal_path, 99, 147, file_attrs[1]);
+							resize_image(featured_path, 222, 318, file_attrs[1]);
 						} else {
-							resize_image(normal_path, 222, 147);
-							resize_image(featured_path, 468, 318);
+							resize_image(normal_path, 222, 147, file_attrs[1]);
+							resize_image(featured_path, 468, 318, file_attrs[1]);
 						}
 					}
 				});
