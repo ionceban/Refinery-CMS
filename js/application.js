@@ -128,6 +128,43 @@ function App_delete_images(Images){
 	}
 }
 
+function App_migrate_to_queue(Images){
+	// migrating the images with no deliverable/keyword back to the queue
+	
+	for (var i = 1; i <= Images[0]; i += 1){
+		if (App_detect_image_type(Images[i]) == 'live'){
+			var current_index = App_find_index(LiveImages, Images[i]);
+			var ToMigrate = LiveImages[current_index];
+			
+			App_remove_image(Images[i]);
+			App_remove_view(Images[i]);
+
+			QueuedImages[0] += 1;
+			QueuedImages[QueuedImages[0]] = ToMigrate;
+		} else {
+			return false;
+		}
+	}
+
+	QueuedImages = App_sort_images(QueuedImages, 'date');
+	
+	App_render_queue();
+}
+
+function App_migrate_to_queue_DB(Images){
+	$.ajax({
+		url: "php/migrate_to_queue.php",
+		cache: false,
+		type: "POST",
+		data: { image_list: JSON.stringify(Images) },
+		success: function(data){
+			if (data == 'success'){
+				App_migrate_to_queue(Images);
+			}
+		}
+	});
+}
+
 function App_assign_list_events(Images){
 	for (var i = 1; i <= Images[0]; i += 1){
 		var item_id = '#list-image-item-' + Images[i];

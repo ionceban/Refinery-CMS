@@ -413,13 +413,6 @@
 				++SAVE_COUNTER;
 				if (SAVE_COUNTER == NECESSARY_SAVES){
 					App_refresh_images(ImagesToSave);
-					/*update_queue();
-					var f_active = $('#live-images-wrapper').attr('f_active');
-					if (f_active == 'filter'){
-						filter_live_images();
-					} else if (f_active == 'search'){
-						search_live_images();
-					}*/
 				}
 			}
         	
@@ -565,6 +558,8 @@
 
 				save_medisc(image_id, $('#medium-sel').val(), $('#med-disc-sel').val());
 				save_didisc(image_id, $('#division-sel').val(), $('#div-disc-sel').val());
+				
+				var unsafe = 0;
 
 				var deliverables_list = '';
 				$('#deliverables-list li').each(function(){
@@ -575,6 +570,10 @@
 						deliverables_list += $(this).attr('deliverable_id');
 					}
 				});
+
+				if (deliverables_list == ''){
+					unsafe = 1;
+				}
 
 				save_deliverables(image_id, deliverables_list);
 
@@ -588,7 +587,16 @@
 					}
 				});
 
+				if (keywords_list == ''){
+					unsafe = 1;
+				}
+
 				save_keywords(image_id, keywords_list);
+
+				if (unsafe == 1){
+					alert("Warning: Live images with no keywords/deliverable will automatically migrate to the queue");
+					App_migrate_to_queue_DB(ImagesToSave);
+				}
 
 				jcrop_get_thumbnail(image_id);
 
@@ -631,6 +639,8 @@
 					save_medisc(id_list, $('#m-medium-sel').val(), $('#m-med-disc-sel').val());
 					save_didisc(id_list, $('#m-division-sel').val(), $('#m-div-disc-sel').val());
 				}
+
+				var unsafe = 0;
 				
 				var deliverables_confirm = parseInt($('#deliverables-confirm').attr('src').split('checkbox-')[1].split('.')[0]);
 				if (deliverables_confirm == 1){
@@ -643,6 +653,10 @@
 							deliverables_list += $(this).attr('deliverable_id');
 						}
 					});
+
+					if (deliverables_list == ''){
+						unsafe = 1;
+					}
 					
 					save_deliverables(id_list, deliverables_list);
 				}
@@ -658,8 +672,17 @@
 							keywords_list += $(this).attr('keyword_id');
 						}
 					});
+
+					if (keywords_list == ''){
+						unsafe = 1;
+					}
 					
 					save_keywords(id_list, keywords_list);
+				}
+
+				if (unsafe == 1){
+					alert('Warning: Live images with no keywords/deliverable will automatically migrate to the queue');
+					App_migrate_to_queue_DB(ImagesToSave);
 				}
 				$('#edit-multiple-dialog').dialog('close');
 			}
