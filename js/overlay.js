@@ -1,3 +1,5 @@
+			var CachedDialogParams, CachedDialogType = 0;
+
 			function get_keywords_list(keyw_arr, which_dialog){
             	
             	$.ajax({
@@ -354,6 +356,8 @@
         	}
         	
 			function edit_multiple_dialog(id_list){
+				CachedDialogType = 2;
+				CachedDialogParams = id_list;
 				
 				$('#edit-multiple-dialog').attr('id_list', id_list);
 				
@@ -736,6 +740,14 @@
             	$('#edit-kd').dialog('open');
             	refresh_kd_edit(kd_type);
             }
+
+			function refresh_cached_dialog(){
+				if (CachedDialogType == 1){
+					edit_dialog(CachedDialogParams);
+				} else if (CachedDialogType == 2){
+					edit_multiple_dialog(CachedDialogParams);
+				}
+			}
 			
 			$(document).ready(function(){
 				$('#project-confirm').click(function(){
@@ -785,6 +797,7 @@
           		});
           		$('#done-kd').click(function(){
           			$('#edit-kd').dialog('close');
+					refresh_cached_dialog();
           		});
           		
           		$('.edit-kd-keywords').click(function(){

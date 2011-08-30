@@ -79,6 +79,9 @@
         	
         	
 			function edit_dialog(image_id){
+				CachedDialogType = 1;
+				CachedDialogParams = image_id;
+
 				ImagesToSave[0] = 1;
 				ImagesToSave[1] = image_id;
 
@@ -250,7 +253,8 @@
                     zIndex: 3010,
                     buttons: {
                         Ok: function() {
-                            $( this ).dialog( "close" );
+							$( this ).dialog( "close" );
+							CachedDialogType = 0;
                         }
                     }
 
@@ -269,7 +273,8 @@
                 	zIndex: 3010,
                 	buttons: {
                 		Ok: function(){
-                			$(this).dialog('close');
+							$(this).dialog('close');
+							CachedDialogType = 0;
                 		}
                 	}
                 });
@@ -285,7 +290,8 @@
                 	zIndex: 3010,
                 	buttons: {
                 		Ok: function(){
-                			$(this).dialog('close');
+							$(this).dialog('close');
+							refresh_cached_dialog();
                 		}
                 	}
                 });
@@ -736,8 +742,8 @@
 						</tr>
 					</table>
 					<div class="edit-buttons">
-                                <a href="javascript: void(0)" onclick="save_multiple($('#edit-multiple-dialog').attr('id_list'));">save</a>
-                                <a href="javascript: void(0)" onclick="$('#edit-multiple-dialog').dialog('close');">cancel</a>
+                                <a href="javascript: void(0)" onclick="save_multiple($('#edit-multiple-dialog').attr('id_list'));CachedDialogType=0;">save</a>
+                                <a href="javascript: void(0)" onclick="$('#edit-multiple-dialog').dialog('close');CachedDialogType=0;">cancel</a>
                             </div>
 				</section>
 			</div>
@@ -891,8 +897,8 @@
                                 </section>
                             </div><!-- end details-wrapper -->
                             <div class="edit-buttons">
-                                <a href="javascript: void(0)" onclick="save_single()">save</a>
-                                <a href="javascript: void(0)" onclick="$('#overlay').dialog('close');">cancel</a>
+                                <a href="javascript: void(0)" onclick="save_single();CachedDialogType=0;">save</a>
+                                <a href="javascript: void(0)" onclick="$('#overlay').dialog('close');CachedDialogType=0;">cancel</a>
                             </div><!-- end edit-buttons -->
                         </form>
                     </section>
