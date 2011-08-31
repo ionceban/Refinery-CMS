@@ -698,7 +698,7 @@
             			if (data != 'failed'){
             				$('#kd-wrapper ul').html(data);
             				$('.delete-kd-button').click(function(){
-            					var ays = confirm("Are you sure?");
+            					var ays = confirm("Are you sure? Live images with no deliverable/keyword assigned will automatically migrate back to the queue.");
             					if (ays == true){
             						var kd_id = $(this).parents('li').attr('kd_id');
             						var kd_type = $('#edit-kd').attr('kd_type');
