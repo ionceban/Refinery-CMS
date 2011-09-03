@@ -766,7 +766,7 @@
                             <form enctype="multipart/form-data" action="php/new_thumb.php" id="new_thumb_form">
                             	<input id="thumb_image_id" type="hidden" name="image_id" value="" />
                             	<input id="thumb_file" type="file" name="uploaded_file" />
-                            </form>
+							</form>
                         </li>
                     </ul>
                     <section class="image-details">

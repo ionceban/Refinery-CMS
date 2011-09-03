@@ -31,7 +31,12 @@
 		$response .= "</td>";
 		$response .= "<td>" . $image_array[$i]['project_name'] . "</td>";
 		$response .= "<td>" . $image_array[$i]['filename'] . "</td>";
-		$response .= "<td>" . $image_array[$i]['date'] . "</td>";
+		$response .= "<td>";
+
+		$cdate = $image_array[$i]['date'];
+		$response .= $cdate[5] . $cdate[6] . $cdate[7] . $cdate[8] . $cdate[9] . $cdate[4] . $cdate[2] . $cdate[3];
+
+		$response .= "</td>";
 		$response .= "<td>" . $image_array[$i]['medium_name'] . "</td>";
 		$response .= "<td>" . $image_array[$i]['division_name'] . "</td>";
 		$response .= "<td style='width: 150px'>";
