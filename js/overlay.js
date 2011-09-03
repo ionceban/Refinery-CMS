@@ -14,7 +14,7 @@
             					$(this).addClass('selected');
             				}
             			});
-						$('#m-keywords-list .select-toggle').click(function(evt){
+						/*$('#m-keywords-list .select-toggle').click(function(evt){
 							evt.stopPropagation();
 							var checkbox = $(this);
 							var keyword_id = checkbox.parents('li:first').attr('keyword_id');
@@ -34,7 +34,7 @@
 								}
 							});
 
-						});
+						});*/
 
             			$('#keywords-list').html(data);
             			$('#keywords-list li').click(function(){
@@ -44,7 +44,7 @@
             					$(this).addClass('selected');
             				}
             			});
-						$('#keywords-list .select-toggle').click(function(evt){
+						/*$('#keywords-list .select-toggle').click(function(evt){
 							evt.stopPropagation();
 							var checkbox = $(this);
 							var keyword_id = checkbox.parents('li:first').attr('keyword_id');
@@ -63,7 +63,7 @@
 									get_keywords_list(keyw_arr, 'single');
 								}
 							});
-						});
+						});*/
 
 						if (!(keyw_arr === undefined)){
 							refresh_keywords_list(keyw_arr, which_dialog);

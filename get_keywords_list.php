@@ -8,8 +8,15 @@
 	
 	while ($row = mysql_fetch_row($query)){
 		$response .= "<li keyword_id='" . $row[0] . "'>";
-		$response .= "<img class='select-toggle' src='images/checkbox-". $row[2] . ".png' />";
-	   	$response .= $row[1] . "</li>";
+		//$response .= "<img class='select-toggle' src='images/checkbox-". $row[2] . ".png' />";
+		if ($row[2] == '1'){
+			$response .= "<b><i>";
+		}
+		$response .= $row[1];
+		if ($row[2] == '1'){
+			$response .= "</i></b>";
+		}
+		$response .= "</li>";
 	}
 	
 	echo $response;
