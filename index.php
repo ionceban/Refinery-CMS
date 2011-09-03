@@ -457,11 +457,11 @@
                                 <thead>
                                 <th></th>
                                 <th></th>
-                                <th>project title</th>
-                                <th>file name</th>
-                                <th>date added</th>
-                                <th>medium</th>
-                                <th>division</th>
+                                <th style="cursor: pointer" onclick="App_sort_queue_project_name();">project title</th>
+                                <th style="cursor: pointer" onclick="App_sort_queue_filename();">file name</th>
+                                <th style="cursor: pointer" onclick="App_sort_queue_date();">date added</th>
+                                <th style="cursor: pointer" onclick="App_sort_queue_medium_name();">medium</th>
+                                <th style="cursor: pointer" onclick="App_sort_queue_division_name();">division</th>
                                 <th>deliverable</th>
                                 <th>keywords</th>
                                 <th></th>
@@ -558,11 +558,11 @@
 	                                <thead>
 	                                <th></th>
 	                                <th></th>
-	                                <th>project title</th>
-	                                <th>file name</th>
-	                                <th>date added</th>
-	                                <th>medium</th>
-	                                <th>division</th>
+	                                <th style="cursor: pointer" onclick="App_sort_live_project_name();">project title</th>
+	                                <th style="cursor: pointer" onclick="App_sort_live_filename();">file name</th>
+	                                <th style="cursor: pointer" onclick="App_sort_live_date();">date added</th>
+	                                <th style="cursor: pointer" onclick="App_sort_live_medium_name();">medium</th>
+	                                <th style="cursor: pointer" onclick="App_sort_live_division_name();">division</th>
 	                                <th>deliverable</th>
 	                                <th>keywords</th>
 	                                <th></th>

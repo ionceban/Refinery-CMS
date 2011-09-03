@@ -20,6 +20,30 @@ function App_sort_za(a, b){
 	}
 }
 
+function App_sort_project_name(a, b){
+	if (a.project_name < b.project_name){
+		return (-1);
+	} else {
+		return 1;
+	}
+}
+
+function App_sort_medium_name(a, b){
+	if (a.medium_name < b.medium_name){
+		return (-1);
+	} else {
+		return 1;
+	}
+}
+
+function App_sort_division_name(a, b){
+	if (a.division_name < b.division_name){
+		return (-1);
+	} else {
+		return 1;
+	}
+}
+
 function App_sort_date(a, b){
 	var aYear = a.date.split('-')[0], aMonth = a.date.split('-')[1], aDay = a.date.split('-')[2];
 	var bYear = b.date.split('-')[0], bMonth = b.date.split('-')[1], bDay = b.date.split('-')[2];
@@ -54,8 +78,14 @@ function App_sort_images(Images, order){
 		CopyArray.sort(App_sort_az);
 	} else if (order == 'za'){
 		CopyArray.sort(App_sort_za);
-	} else if (order =='date'){
+	} else if (order == 'date'){
 		CopyArray.sort(App_sort_date);
+	} else if (order == 'project name'){
+		CopyArray.sort(App_sort_project_name);
+	} else if (order == 'medium name'){
+		CopyArray.sort(App_sort_medium_name);
+	} else if (order == 'division name'){
+		CopyArray.sort(App_sort_division_name);
 	}
 
 	for (var i = 1; i <= Images[0]; i += 1){
@@ -63,6 +93,70 @@ function App_sort_images(Images, order){
 	}
 
 	return Images;
+}
+
+// Queue Table Headers - Sort by
+
+function App_sort_queue_filename(){
+	QueuedImages = App_sort_images(QueuedImages, 'az');
+
+	App_render_queue();
+}
+
+function App_sort_queue_date(){
+	QueuedImages = App_sort_images(QueuedImages, 'date');
+
+	App_render_queue();
+}
+
+function App_sort_queue_project_name(){
+	QueuedImages = App_sort_images(QueuedImages, 'project name');
+
+	App_render_queue();
+}
+
+function App_sort_queue_medium_name(){
+	QueuedImages = App_sort_images(QueuedImages, 'medium name');
+
+	App_render_queue();
+}
+
+function App_sort_queue_division_name(){
+	QueuedImages = App_sort_images(QueuedImages, 'division name');
+
+	App_render_queue();
+}
+
+// Live Table Headers - Sort by
+
+function App_sort_live_filename(){
+	LiveImages = App_sort_images(LiveImages, 'az');
+
+	App_render_live();
+}
+
+function App_sort_live_date(){
+	LiveImages = App_sort_images(LiveImages, 'date');
+
+	App_render_live();
+}
+
+function App_sort_live_project_name(){
+	LiveImages = App_sort_images(LiveImages, 'project name');
+
+	App_render_live();
+}
+
+function App_sort_live_medium_name(){
+	LiveImages = App_sort_images(LiveImages, 'medium name');
+
+	App_render_live();
+}
+
+function App_sort_live_division_name(){
+	LiveImages = App_sort_images(LiveImages, 'division name');
+
+	App_render_live();
 }
 
 function App_find_index(target_array, image_id){
