@@ -223,6 +223,10 @@ function App_assign_list_events(Images){
 			edit_dialog($(this).parents('.list-image-item:first').attr('image_id'));	
 		});
 
+		$(item_id + ' .list-thumb').click(function(){
+			edit_dialog($(this).parents('.list-image-item:first').attr('image_id'));
+		});
+
 		$(item_id + ' .delete-button').click(function(){
 			var image_id = $(this).parents('.list-image-item:first').attr('image_id');
 			var dummy = new Array();

@@ -513,7 +513,7 @@
                                 </a>
                                 <div class="search-dropdown">
                                     <span>
-                                        <a class="reset-input" href="#">reset input</a>
+                                        <a class="reset-input" href="javascript: void(0)" onclick="$('#search-query-string').val('');">reset input</a>
                                         <input id="search-query-string" type="text" name="search" value="" />
                                     </span>
                                     <input type="submit" value="search" onclick="search_live_images();"/>
