@@ -128,5 +128,7 @@
 					resize_image(grid_path, grid_width, grid_height, 'jpg');
 
 					jcrop_init($('#overlay').attr('image_id'), 1);
+				} else {
+					alert('Failed. WARNING: Images must be at least 500 x 400');
 				}
 			}
