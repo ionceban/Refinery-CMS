@@ -264,8 +264,8 @@
                 
                 $('#edit-multiple-dialog').dialog({
                 	autoOpen: false,
-                	width: "600",
-                	height: "600",
+                	width: "570",
+                	height: "630",
                 	draggable: false,
                 	resizable: false,
                 	position: "top",
@@ -631,6 +631,7 @@
 			<div id="edit-multiple-dialog">
 				<header>
 					<h2>edit images</h2>
+					<span style='color:#fff; display: block; width: 550px;'>In order to save your changes, you must check the box of the section you're editing.</span>
 				</header>
 				
 				<section id="edit-multiple-details">
