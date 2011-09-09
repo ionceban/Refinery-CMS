@@ -10,7 +10,7 @@
 	
 	while ($row = mysql_fetch_row($query)){
 		if ($row[2] == '1' && $already_hidden == 0){
-			$response .= "<h3 style='color: #ffffff'>Hidden Keywords</h3>";
+			$response .= "<h3 style='color: #E20B3A'>Hidden Keywords</h3>";
 		}
 
 		$response .= "<li keyword_id='" . $row[0] . "'>";
