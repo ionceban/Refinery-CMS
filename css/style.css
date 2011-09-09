@@ -981,3 +981,31 @@ ul.dropdown-nav div.mm-item-content {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+#edit-kd-input{
+	background: none;
+	color: #ffffff;
+	border-bottom: 1px solid #DADBDB;
+}
+
+#cancel-edited-kd{
+	width: 55px;
+	margin-right: 10px;
+	margin-top: 10px;
+	display: block;
+	float: right;
+	cursor: pointer;
+	color: #ffffff;
+	background-color: #e20b3a;
+}
+
+#save-edited-kd{
+	width: 40px;
+	margin-right: 5px;
+	margin-top: 10px;
+	display: block;
+	float: right;
+	cursor: pointer;
+	color: #ffffff;
+	background-color: #E20B3A;
+}

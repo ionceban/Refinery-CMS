@@ -294,8 +294,45 @@
 							refresh_cached_dialog();
                 		}
                 	}
-                });
-                
+				});
+
+				$('#edit-single-kd').dialog({
+					autoOpen: false,
+					width: "220",
+					height: "80",
+					draggable: false,
+					resizable: false,
+					position: "top",
+					modal: true,
+					zIndex: 3020
+				});
+
+				$('#save-edited-kd').click(function(){
+					$.ajax({
+						url: "php/save_kd_name.php",
+						cache: false,
+						type: "POST",
+						data: {
+							kd_type: $('#edit-single-kd').attr('kd_type'),
+							kd_id: $('#edit-single-kd').attr('kd_id'),
+							new_value: $('#edit-kd-input').val()
+						}, success: function(data){
+							if (data == 'failed'){
+								alert('ERROR');
+							} else {
+								$('#edit-single-kd').dialog('close');
+								$('#edit-kd-input').val('');
+								refresh_kd_edit($('#edit-single-kd').attr('kd_type'));
+							}
+						}
+					});
+				});
+
+				$('#cancel-edited-kd').click(function(){
+					$('#edit-single-kd').dialog('close');
+					$('#edit-kd-input').val('');
+				});
+
                 get_keywords_list();
             	get_deliverables_list();
             	
@@ -585,6 +622,11 @@
 					<span id="add-kd-button"><span>add</span></span>
 				</div>
 				<span id="done-kd"><span>done</span></span>
+			</div>
+			<div id="edit-single-kd">
+				<input type="text" id="edit-kd-input" />
+				<span id="cancel-edited-kd">cancel</span>
+				<span id="save-edited-kd">save</span>
 			</div>
 			<div id="edit-multiple-dialog">
 				<header>

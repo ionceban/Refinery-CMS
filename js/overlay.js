@@ -686,6 +686,23 @@
 				}
 				$('#edit-multiple-dialog').dialog('close');
 			}
+
+			function edit_kd_dialog(kd_id){
+				var kd_type = $('#edit-kd').attr('kd_type');
+				$('#edit-single-kd').attr('kd_type', kd_type);
+				$('#edit-single-kd').attr('kd_id', kd_id);
+				
+				$.ajax({
+					url: "php/get_kd_name.php",
+					cache: false,
+					type: "POST",
+					data: {kd_type: kd_type, kd_id: kd_id},
+					success: function (data){
+						$('#edit-kd-input').val(data);
+						$('#edit-single-kd').dialog('open');
+					}
+				});
+			}
 			
 			function refresh_kd_edit(kd_type){
             	$('#edit-kd').attr('kd_type', kd_type);
@@ -697,7 +714,8 @@
             		success: function (data){
             			if (data != 'failed'){
             				$('#kd-wrapper ul').html(data);
-            				$('.delete-kd-button').click(function(){
+            				$('.delete-kd-button').click(function(evt){
+								evt.stopPropagation();
             					var ays = confirm("Are you sure? Live images with no deliverable/keyword assigned will automatically migrate back to the queue.");
             					if (ays == true){
             						var kd_id = $(this).parents('li').attr('kd_id');
@@ -728,9 +746,14 @@
             						});
             					}
             				});
+
+							$('#kd-wrapper li').click(function(){
+								edit_kd_dialog($(this).attr('kd_id'));
+							});
 							
 							if (kd_type == 'keywords'){
-								$('#kd-wrapper .hide-toggle').click(function(){
+								$('#kd-wrapper .hide-toggle').click(function(evt){
+									evt.stopPropagation();
 									var keyword_id = $(this).parents('li:first').attr('kd_id');
 									var selectObj = $(this);
 									$.ajax({
